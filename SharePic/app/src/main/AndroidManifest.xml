@@ -16,6 +16,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CreateProfileActivity"
+            android:label="@string/title_activity_create_profile" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".SelectProfileActivity"
+            android:label="@string/title_activity_select_profile" >
+        </activity>
+        <activity
+            android:name=".ProfileDetailActivity"
+            android:label="@string/title_activity_profile_detail" >
+        </activity>
     </application>
 
 </manifest>
