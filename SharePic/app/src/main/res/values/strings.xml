@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_create_profile">Create Profile</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_select_profile">SelectProfileActivity</string>
+    <string name="title_activity_profile_detail">ProfileDetailActivity</string>
 </resources>
