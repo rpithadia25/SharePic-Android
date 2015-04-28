@@ -1,4 +1,4 @@
-package edu.sdsu.cs.sharepic;
+package edu.sdsu.cs.sharepic.activity;
 
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
@@ -6,20 +6,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.Constants;
+import edu.sdsu.cs.sharepic.R;
+import edu.sdsu.cs.sharepic.model.Dropbox;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private ListView listView;
+    private Button button;
+    Dropbox dropbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,39 +34,38 @@ public class MainActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
+                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X"};
 
         final ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
+        for (String value : values) {
+            list.add(value);
         }
 
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dropbox = Dropbox.getInstance(getApplicationContext());
 
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
+            public void onClick(View v) {
+                if (!dropbox.isLoggedIn()) {
+                    dropbox.login();
+                }
             }
-
         });
-}
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (dropbox != null) {
+            dropbox.finishLogin();
+        }
+    }
+
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
 

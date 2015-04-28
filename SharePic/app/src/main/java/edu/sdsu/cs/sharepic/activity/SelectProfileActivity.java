@@ -1,4 +1,4 @@
-package edu.sdsu.cs.sharepic;
+package edu.sdsu.cs.sharepic.activity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,19 +7,20 @@ import android.view.MenuItem;
 
 import edu.sdsu.cs.sharepic.R;
 
-public class SettingsActivity extends ActionBarActivity {
+
+public class SelectProfileActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_select_profile);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
+        getMenuInflater().inflate(R.menu.menu_select_profile, menu);
         return true;
     }
 

@@ -8,11 +8,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/selectImage"/>
+        android:id="@+id/button"/>
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView" />
+        android:id="@+id/listView"
+        android:layout_below="@+id/button" />
 
 </RelativeLayout>
