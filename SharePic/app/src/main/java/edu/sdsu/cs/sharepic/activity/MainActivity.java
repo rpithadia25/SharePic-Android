@@ -1,6 +1,7 @@
 package edu.sdsu.cs.sharepic.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,13 +18,15 @@ import java.util.List;
 import edu.sdsu.cs.sharepic.Constants;
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.model.Dropbox;
+import edu.sdsu.cs.sharepic.model.FlickrAccount;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private ListView listView;
     private Button button;
-    Dropbox dropbox;
+    private Dropbox dropbox;
+    private FlickrAccount flickr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,23 +49,38 @@ public class MainActivity extends ActionBarActivity {
         listView.setAdapter(adapter);
 
         dropbox = Dropbox.getInstance(getApplicationContext());
+        flickr = FlickrAccount.getInstance(this);
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!dropbox.isLoggedIn()) {
-                    dropbox.login();
+//                if (!dropbox.isLoggedIn()) {
+//                    dropbox.login();
+//                }
+
+                if (!flickr.isLoggedIn()) {
+                    flickr.login();
                 }
             }
         });
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        //this is very important, otherwise you would get a null Scheme in the onResume later on.
+        setIntent(intent);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        if (dropbox != null) {
-            dropbox.finishLogin();
+//        if (dropbox != null) {
+//            dropbox.finishLogin();
+//        }
+
+        if (flickr != null) {
+            flickr.finishLogin(getIntent());
         }
     }
 
