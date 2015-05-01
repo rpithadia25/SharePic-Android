@@ -13,8 +13,4 @@ public class Constants {
     public static final String KEY_FLICKR_SECRET_TOKEN = "FlickrSecretToken";
 
     public static final String EQUALS = "=";
-
-//    NSString *const HRFlickrApiKey = @"500422a15f9a413791a73c123d219b2a";
-//    NSString *const HRFlickrSecretKey = @"4144818e19bd4ce4";
-
 }
