@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,36 +36,61 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         setTitle(Constants.MAIN_TITLE);
 
-        listView = (ListView) findViewById(R.id.listView);
+//        listView = (ListView) findViewById(R.id.listView);
+//
+//        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+//                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X"};
+//
+//        final ArrayList<String> list = new ArrayList<>();
+//        for (String value : values) {
+//            list.add(value);
+//        }
+//
+//        final StableArrayAdapter adapter = new StableArrayAdapter(this,
+//                android.R.layout.simple_list_item_1, list);
+//        listView.setAdapter(adapter);
+//
+//        dropbox = Dropbox.getInstance(getApplicationContext());
+//        flickr = FlickrAccount.getInstance(this);
+//
+//        button = (Button) findViewById(R.id.button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                if (!dropbox.isLoggedIn()) {
+////                    dropbox.login();
+////                }
+//
+//                if (!flickr.isLoggedIn()) {
+//                    flickr.login();
+//                }
+//            }
+//        });
 
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X"};
+        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
 
-        final ArrayList<String> list = new ArrayList<>();
-        for (String value : values) {
-            list.add(value);
+        ContactAdapter ca = new ContactAdapter(createList(30));
+        recList.setAdapter(ca);
+    }
+
+    private List<ContactInfo> createList(int size) {
+
+        List<ContactInfo> result = new ArrayList<ContactInfo>();
+        for (int i=1; i <= size; i++) {
+            ContactInfo ci = new ContactInfo();
+            ci.name = ContactInfo.NAME_PREFIX + i;
+            ci.surname = ContactInfo.SURNAME_PREFIX + i;
+            ci.email = ContactInfo.EMAIL_PREFIX + i + "@test.com";
+
+            result.add(ci);
+
         }
 
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(adapter);
-
-        dropbox = Dropbox.getInstance(getApplicationContext());
-        flickr = FlickrAccount.getInstance(this);
-
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                if (!dropbox.isLoggedIn()) {
-//                    dropbox.login();
-//                }
-
-                if (!flickr.isLoggedIn()) {
-                    flickr.login();
-                }
-            }
-        });
+        return result;
     }
 
     @Override
