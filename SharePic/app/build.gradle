@@ -21,5 +21,6 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.googlecode.flickrj-android:flickrj-android:2.1.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
