@@ -2,16 +2,22 @@ package edu.sdsu.cs.sharepic.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,9 +27,10 @@ import edu.sdsu.cs.sharepic.model.Dropbox;
 import edu.sdsu.cs.sharepic.model.FlickrAccount;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
-    private ListView listView;
+    private static final String TAG = "MainActivity";
+    
     private Button button;
     private Dropbox dropbox;
     private FlickrAccount flickr;
@@ -34,36 +41,38 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         setTitle(Constants.MAIN_TITLE);
 
-        listView = (ListView) findViewById(R.id.listView);
-
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X"};
-
-        final ArrayList<String> list = new ArrayList<>();
-        for (String value : values) {
-            list.add(value);
-        }
-
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(adapter);
-
         dropbox = Dropbox.getInstance(getApplicationContext());
-        flickr = FlickrAccount.getInstance(this);
+        if (!dropbox.isLoggedIn()) {
+            dropbox.login();
+        }
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!dropbox.isLoggedIn()) {
-//                    dropbox.login();
-//                }
-
-                if (!flickr.isLoggedIn()) {
-                    flickr.login();
-                }
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 123);
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        try {
+            Uri imageUri = data.getData();
+            InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            imageView.setImageBitmap(selectedImage);
+
+            dropbox.upload(selectedImage);
+
+        } catch (IOException e) {
+            Log.i(TAG, e.getMessage());
+        }
     }
 
     @Override
@@ -75,9 +84,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        if (dropbox != null) {
-//            dropbox.finishLogin();
-//        }
+        if (dropbox != null) {
+            dropbox.finishLogin();
+        }
 
         if (flickr != null) {
             flickr.finishLogin(getIntent());

@@ -95,7 +95,8 @@ public class FlickrAccount extends Account {
 
     public void finishLogin(Intent intent) {
         String scheme = intent.getScheme();
-        if (Constants.FLICKR_CALLBACK_SCHEME.equals(scheme)) {
+        OAuth savedToken = getOAuthToken();
+        if (Constants.FLICKR_CALLBACK_SCHEME.equals(scheme) && savedToken == null) {
             Uri uri = intent.getData();
             String query = uri.getQuery();
             String[] data = query.split("&");
@@ -194,6 +195,4 @@ public class FlickrAccount extends Account {
             }
         }
     }
-
-
 }
