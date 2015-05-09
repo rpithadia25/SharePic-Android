@@ -1,11 +1,12 @@
 package edu.sdsu.cs.sharepic.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,7 +27,7 @@ import edu.sdsu.cs.sharepic.R;
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
 
-public class ProfileDetailActivity extends FragmentActivity {
+public class ProfileDetailActivity extends ActionBarActivity {
 
     private static int INTENT_REQUEST_GET_IMAGES = 111;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -43,6 +46,22 @@ public class ProfileDetailActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 getImages();
+            }
+        });
+
+        ImageView imageView = new ImageView(this);
+
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(imageView)
+                .setBackgroundDrawable(R.drawable.ic_upload)
+                .build();
+
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context mainActivity = getApplicationContext();
+                Intent goDetail = new Intent(mainActivity, UploadProgressActivity.class);
+                startActivityForResult(goDetail, INTENT_REQUEST_GET_IMAGES);
             }
         });
     }
