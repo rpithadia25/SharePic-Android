@@ -3,7 +3,7 @@ package edu.sdsu.cs.sharepic.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,14 +20,14 @@ import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
 
-public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {
+public class CreateProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button saveButton;
     ListView listView;
     ArrayAdapter<String> adapter;
     EditText profileName;
     private Profile profile;
-    ArrayList<String> selectedAccounts;
+    ArrayList<Account> selectedAccounts;
     Account[] supportedAccounts;
 
     @Override
@@ -38,8 +38,8 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         supportedAccounts = Account.supportedAccounts(getApplicationContext());
         findViewsById();
 
-        final String[] supportedAccounts = getResources().getStringArray(R.array.supported_accounts);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, supportedAccounts);
+        final String[] accounts = getResources().getStringArray(R.array.supported_accounts);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, accounts);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

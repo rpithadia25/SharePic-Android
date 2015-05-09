@@ -2,29 +2,25 @@ package edu.sdsu.cs.sharepic.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-
 import java.util.ArrayList;
-
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     ListView listView;
     ArrayList<String> items = new ArrayList<>();
+    ArrayAdapter<String> itemsAdapter;
     private static final int INTENT_REQUEST_CODE = 1;
 
     @Override
@@ -35,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
 
         listView = (ListView) findViewById(R.id.listView);
         items = new ArrayList<>();
-        ArrayAdapter<String> itemsAdapter =
+        itemsAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         listView.setAdapter(itemsAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,13 +68,8 @@ public class MainActivity extends ActionBarActivity {
             case RESULT_OK:
                 String profileName = data.getStringExtra(Constants.PROFILE);
                 items.add(profileName);
+                itemsAdapter.notifyDataSetChanged();
         }
-    }
-
-    // Can be used to reload list
-    public void reloadActivity() {
-        finish();
-        startActivity(getIntent());
     }
 
     @Override

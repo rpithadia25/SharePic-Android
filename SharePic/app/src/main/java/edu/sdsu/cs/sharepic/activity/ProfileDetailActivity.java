@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -27,7 +27,7 @@ import edu.sdsu.cs.sharepic.R;
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
 
-public class ProfileDetailActivity extends ActionBarActivity {
+public class ProfileDetailActivity extends AppCompatActivity {
 
     private static int INTENT_REQUEST_GET_IMAGES = 111;
     private static final String TAG = MainActivity.class.getSimpleName();

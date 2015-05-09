@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Profile {
     private String profileName;
-    private ArrayList<String> accounts;
+    private ArrayList<Account> accounts;
 
     public String getProfileName() {
         return profileName;
@@ -19,11 +19,11 @@ public class Profile {
         this.profileName = profileName;
     }
 
-    public ArrayList<String> getAccounts() {
+    public ArrayList<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(ArrayList<String> accounts) {
+    public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
     }
 }
