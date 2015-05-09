@@ -3,11 +3,11 @@ package edu.sdsu.cs.sharepic.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.SparseBooleanArray;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,31 +17,42 @@ import java.util.ArrayList;
 
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
 
-public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {
+public class CreateProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-
-    Button saveButton;
-    ListView listView;
-    ArrayAdapter<String> adapter;
-    EditText profileName;
+    private Button saveButton;
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+    private EditText profileName;
     private Profile profile;
+    ArrayList<Account> selectedAccounts;
+    Account[] supportedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
 
+        supportedAccounts = Account.supportedAccounts(getApplicationContext());
         findViewsById();
 
-        String[] supportedAccounts = getResources().getStringArray(R.array.supported_accounts);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, supportedAccounts);
+        String[] accounts = getResources().getStringArray(R.array.supported_accounts);
+        for(int i = 0; i < supportedAccounts.length; i++) {
+            accounts[i] = supportedAccounts[i].toString();
+        }
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, accounts);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedAccounts.add(supportedAccounts[position]);
+            }
+        });
 
         saveButton.setOnClickListener(this);
-
     }
 
     private void findViewsById() {
@@ -49,6 +60,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
         profile = new Profile();
+        selectedAccounts = new ArrayList<>();
     }
 
     @Override
@@ -75,27 +87,11 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        SparseBooleanArray selectedAccounts = listView.getCheckedItemPositions();
         if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
-            ArrayList<String> selectedItems = new ArrayList<String>();
-
-            for (int i = 0; i < selectedAccounts.size(); i++) {
-                // Item position in adapter
-                int position = selectedAccounts.keyAt(i);
-
-                if (selectedAccounts.valueAt(i))
-                    selectedItems.add(adapter.getItem(position));
-            }
-
-            ArrayList<String> outputStrArr = new ArrayList<>();
-
-            for (int i = 0; i < selectedItems.size(); i++) {
-                outputStrArr.add(i, selectedItems.get(i));
-            }
-
+            profile.setProfileName(profileName.getText().toString());
+            profile.setAccounts(selectedAccounts);
             Intent passBack = getIntent();
-//            passBack.putExtra("selectedAccounts", outputStrArr);
-            passBack.putExtra(Constants.PROFILE_NAME, profileName.getText().toString());
+            passBack.putExtra(Constants.PROFILE, profile.getProfileName());
             setResult(RESULT_OK, passBack);
             finish();
         } else if (profileName.length() == 0) {

@@ -6,4 +6,8 @@
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
     </style>
 
+    <style name="HoloTheme" parent="@android:style/Theme.Holo.Light">
+
+    </style>
+
 </resources>

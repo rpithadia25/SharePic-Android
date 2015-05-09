@@ -1,14 +1,14 @@
 package edu.sdsu.cs.sharepic.activity;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import edu.sdsu.cs.sharepic.R;
 
 
-public class SelectProfileActivity extends ActionBarActivity {
+public class SelectProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

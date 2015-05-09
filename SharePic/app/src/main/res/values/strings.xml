@@ -13,5 +13,6 @@
         <item>Flickr</item>
         <item>Dropbox</item>
     </string-array>
+    <string name="title_activity_upload_progress">UploadProgress</string>
 
 </resources>
