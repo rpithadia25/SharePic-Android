@@ -8,6 +8,7 @@ import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
 
 public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {
@@ -27,6 +29,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     ArrayAdapter<String> adapter;
     EditText profileName;
     private Profile profile;
+    ArrayList<Account> selectedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,14 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, supportedAccounts);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO: Populate supportedAccounts here
+            }
+        });
 
         saveButton.setOnClickListener(this);
-
     }
 
     private void findViewsById() {
@@ -49,6 +57,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
         profile = new Profile();
+        selectedAccounts = new ArrayList<>();
     }
 
     @Override
@@ -77,6 +86,8 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     public void onClick(View v) {
         SparseBooleanArray selectedAccounts = listView.getCheckedItemPositions();
         if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
+            profile.setProfileName(profileName.getText().toString());
+//            profile.setAccounts();
             ArrayList<String> selectedItems = new ArrayList<String>();
 
             for (int i = 0; i < selectedAccounts.size(); i++) {
