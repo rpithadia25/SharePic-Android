@@ -46,6 +46,11 @@ public class Dropbox extends Account {
         return mInstance;
     }
 
+    @Override
+    public String toString() {
+        return Constants.DROPBOX;
+    }
+
     private void init() {
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         AndroidAuthSession session;

@@ -26,4 +26,5 @@ public class Profile {
     public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
     }
+
 }

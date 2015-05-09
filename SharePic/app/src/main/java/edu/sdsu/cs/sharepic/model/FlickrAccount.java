@@ -48,6 +48,11 @@ public class FlickrAccount extends Account {
         return mInstance;
     }
 
+    @Override
+    public String toString() {
+        return Constants.FLICKR;
+    }
+
     public Flickr getFlickr() {
         if (flickr == null) {
             flickr = new Flickr(API_KEY, API_SECRET_KEY);

@@ -22,10 +22,10 @@ import edu.sdsu.cs.sharepic.model.Profile;
 
 public class CreateProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button saveButton;
-    ListView listView;
-    ArrayAdapter<String> adapter;
-    EditText profileName;
+    private Button saveButton;
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+    private EditText profileName;
     private Profile profile;
     ArrayList<Account> selectedAccounts;
     Account[] supportedAccounts;
@@ -38,8 +38,11 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         supportedAccounts = Account.supportedAccounts(getApplicationContext());
         findViewsById();
 
-        final String[] accounts = getResources().getStringArray(R.array.supported_accounts);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, accounts);
+        String[] accounts = getResources().getStringArray(R.array.supported_accounts);
+        for(int i = 0; i < supportedAccounts.length; i++) {
+            accounts[i] = supportedAccounts[i].toString();
+        }
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, accounts);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

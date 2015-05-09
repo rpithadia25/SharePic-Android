@@ -19,4 +19,6 @@ public class Constants {
     public static final String KEY_FLICKR_OAUTH_TOKEN           = "FlickrOAuthToken";
     public static final String KEY_FLICKR_SECRET_TOKEN          = "FlickrSecretToken";
     public static final String EQUALS                           = "=";
+    public static final String DROPBOX                          = "Dropbox";
+    public static final String FLICKR                           = "Flickr";
 }

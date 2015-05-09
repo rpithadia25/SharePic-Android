@@ -30,7 +30,7 @@ import nl.changer.polypicker.utils.ImageInternalFetcher;
 public class ProfileDetailActivity extends AppCompatActivity {
 
     private static int INTENT_REQUEST_GET_IMAGES = 111;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = "ProfileDetailActivity";
     private ViewGroup mSelectedImagesContainer;
     HashSet<Uri> mMedia = new HashSet<Uri>();
 
