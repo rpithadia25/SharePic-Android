@@ -13,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.model.Profile;
 
 public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -23,6 +26,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     ListView listView;
     ArrayAdapter<String> adapter;
     EditText profileName;
+    private Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         listView = (ListView) findViewById(R.id.accountsList);
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
+        profile = new Profile();
     }
 
     @Override
@@ -72,21 +77,21 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     public void onClick(View v) {
         SparseBooleanArray selectedAccounts = listView.getCheckedItemPositions();
         if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
-//            ArrayList<String> selectedItems = new ArrayList<String>();
-//
-//            for (int i = 0; i < selectedAccounts.size(); i++) {
-//                // Item position in adapter
-//                int position = selectedAccounts.keyAt(i);
-//
-//                if (selectedAccounts.valueAt(i))
-//                    selectedItems.add(adapter.getItem(position));
-//            }
+            ArrayList<String> selectedItems = new ArrayList<String>();
 
-//            ArrayList<String> outputStrArr = new ArrayList<>();
-//
-//            for (int i = 0; i < selectedItems.size(); i++) {
-//                outputStrArr.add(i, selectedItems.get(i));
-//            }
+            for (int i = 0; i < selectedAccounts.size(); i++) {
+                // Item position in adapter
+                int position = selectedAccounts.keyAt(i);
+
+                if (selectedAccounts.valueAt(i))
+                    selectedItems.add(adapter.getItem(position));
+            }
+
+            ArrayList<String> outputStrArr = new ArrayList<>();
+
+            for (int i = 0; i < selectedItems.size(); i++) {
+                outputStrArr.add(i, selectedItems.get(i));
+            }
 
             Intent passBack = getIntent();
 //            passBack.putExtra("selectedAccounts", outputStrArr);
