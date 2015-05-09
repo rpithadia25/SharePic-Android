@@ -1,25 +1,41 @@
 package edu.sdsu.cs.sharepic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+import edu.sdsu.cs.sharepic.classes.AbstractAccount;
 import edu.sdsu.cs.sharepic.classes.Constants;
-
+import edu.sdsu.cs.sharepic.classes.RecyclerViewAdapter;
+import edu.sdsu.cs.sharepic.classes.RowItems;
 
 public class MainActivity extends ActionBarActivity {
 
-    private ListView listView;
+    RecyclerView recyclerView;
+    ArrayList<RowItems> itemsList = new ArrayList<>();
+    RecyclerViewAdapter adapter;
+    ListView listView;
+    ListAdapter lAdapter;
+    ArrayList<String> items = new ArrayList<>();
+    private static final int INTENT_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,67 +44,56 @@ public class MainActivity extends ActionBarActivity {
         setTitle(Constants.MAIN_TITLE);
 
         listView = (ListView) findViewById(R.id.listView);
-
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
-
-        final ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(adapter);
-
+        items = new ArrayList<>();
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        listView.setAdapter(itemsAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Context mainActivity = getApplicationContext();
+                Intent goDetail = new Intent(mainActivity, ProfileDetailActivity.class);
+                goDetail.putExtra("profile", items.get(position));
+                startActivity(goDetail);
             }
-
         });
+//        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        //adapter = new RecyclerViewAdapter(MainActivity.this, getData());
+//        adapter = new RecyclerViewAdapter(MainActivity.this, itemsList);
+//        recyclerView.setAdapter(adapter);
+
+        ImageView imageView = new ImageView(this);
+
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(imageView)
+                .setBackgroundDrawable(R.drawable.ic_plus)
+                .build();
+
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context mainActivity = getApplicationContext();
+                Intent goDetail = new Intent(mainActivity, CreateProfileActivity.class);
+                startActivityForResult(goDetail, INTENT_REQUEST_CODE);
+            }
+        });
+
 }
 
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                String profileName = data.getStringExtra(Constants.PROFILE_NAME);
+                items.add(profileName);
         }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
     }
 
+    public void reloadActivity() {
+        finish();
+        startActivity(getIntent());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -106,6 +111,9 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Context mainActivity = getApplicationContext();
+            Intent goSettings = new Intent(mainActivity, SettingsActivity.class);
+            startActivity(goSettings);
             return true;
         }
 
