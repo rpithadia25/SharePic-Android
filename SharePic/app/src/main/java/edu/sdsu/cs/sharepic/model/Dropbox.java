@@ -16,8 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import edu.sdsu.cs.sharepic.Constants;
 import edu.sdsu.cs.sharepic.Utils;
+import edu.sdsu.cs.sharepic.classes.Constants;
 
 /**
  * Created by Rakshit Pithadia on 4/15/15.

@@ -2,7 +2,6 @@ package edu.sdsu.cs.sharepic.model;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,8 +15,8 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import java.net.URL;
 
-import edu.sdsu.cs.sharepic.Constants;
 import edu.sdsu.cs.sharepic.Utils;
+import edu.sdsu.cs.sharepic.classes.Constants;
 
 /**
 * Created by Rakshit Pithadia on 4/15/15.
