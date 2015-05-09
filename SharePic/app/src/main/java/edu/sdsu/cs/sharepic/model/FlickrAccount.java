@@ -169,6 +169,7 @@ public class FlickrAccount extends Account {
 
             if (!url.isEmpty() && !url.startsWith("error")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         }
