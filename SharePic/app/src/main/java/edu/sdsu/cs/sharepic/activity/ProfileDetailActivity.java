@@ -90,7 +90,6 @@ public class ProfileDetailActivity extends FragmentActivity {
         while(iterator.hasNext()) {
             Uri uri = iterator.next();
 
-            // showImage(uri);
             Log.i(TAG, " uri: " + uri);
             if(mMedia.size() >= 1) {
                 mSelectedImagesContainer.setVisibility(View.VISIBLE);
@@ -98,8 +97,6 @@ public class ProfileDetailActivity extends FragmentActivity {
 
             View imageHolder = LayoutInflater.from(this).inflate(R.layout.media_layout, null);
 
-            // View removeBtn = imageHolder.findViewById(R.id.remove_media);
-            // initRemoveBtn(removeBtn, imageHolder, uri);
             ImageView thumbnail = (ImageView) imageHolder.findViewById(R.id.media_image);
 
             if(!uri.toString().contains("content://")) {

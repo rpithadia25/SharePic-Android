@@ -20,16 +20,10 @@ import java.util.ArrayList;
 
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
-import edu.sdsu.cs.sharepic.classes.RecyclerViewAdapter;
-import edu.sdsu.cs.sharepic.classes.RowItems;
 
 public class MainActivity extends ActionBarActivity {
 
-    RecyclerView recyclerView;
-    ArrayList<RowItems> itemsList = new ArrayList<>();
-    RecyclerViewAdapter adapter;
     ListView listView;
-    ListAdapter lAdapter;
     ArrayList<String> items = new ArrayList<>();
     private static final int INTENT_REQUEST_CODE = 1;
 
@@ -53,11 +47,6 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(goDetail);
             }
         });
-//        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        //adapter = new RecyclerViewAdapter(MainActivity.this, getData());
-//        adapter = new RecyclerViewAdapter(MainActivity.this, itemsList);
-//        recyclerView.setAdapter(adapter);
 
         ImageView imageView = new ImageView(this);
 
@@ -86,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    // Can be used to reload list
     public void reloadActivity() {
         finish();
         startActivity(getIntent());

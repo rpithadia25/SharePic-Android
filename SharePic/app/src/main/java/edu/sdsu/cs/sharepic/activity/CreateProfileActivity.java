@@ -22,7 +22,6 @@ import edu.sdsu.cs.sharepic.model.Profile;
 
 public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {
 
-
     Button saveButton;
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -85,26 +84,9 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        //SparseBooleanArray selectedAccounts = listView.getCheckedItemPositions();
         if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
             profile.setProfileName(profileName.getText().toString());
             profile.setAccounts(selectedAccounts);
-//            ArrayList<String> selectedItems = new ArrayList<String>();
-//
-//            for (int i = 0; i < selectedAccounts.size(); i++) {
-//                // Item position in adapter
-//                int position = selectedAccounts.keyAt(i);
-//
-//                if (selectedAccounts.valueAt(i))
-//                    selectedItems.add(adapter.getItem(position));
-//            }
-//
-//            ArrayList<String> outputStrArr = new ArrayList<>();
-//
-//            for (int i = 0; i < selectedItems.size(); i++) {
-//                outputStrArr.add(i, selectedItems.get(i));
-//            }
-
             Intent passBack = getIntent();
             passBack.putExtra(Constants.PROFILE, profile.getProfileName());
             setResult(RESULT_OK, passBack);
