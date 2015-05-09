@@ -1,6 +1,5 @@
 package edu.sdsu.cs.sharepic.model;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -9,9 +8,7 @@ import android.util.Log;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
-import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.Session;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,8 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import edu.sdsu.cs.sharepic.Constants;
 import edu.sdsu.cs.sharepic.Utils;
+import edu.sdsu.cs.sharepic.classes.Constants;
 
 /**
  * Created by Rakshit Pithadia on 4/15/15.

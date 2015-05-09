@@ -2,7 +2,6 @@ package edu.sdsu.cs.sharepic.model;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,24 +9,15 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.FlickrException;
-import com.googlecode.flickrjandroid.REST;
-import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.auth.Permission;
-import com.googlecode.flickrjandroid.interestingness.InterestingnessInterface;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthInterface;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.photos.PhotosInterface;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import edu.sdsu.cs.sharepic.Constants;
 import edu.sdsu.cs.sharepic.Utils;
+import edu.sdsu.cs.sharepic.classes.Constants;
 
 /**
 * Created by Rakshit Pithadia on 4/15/15.
