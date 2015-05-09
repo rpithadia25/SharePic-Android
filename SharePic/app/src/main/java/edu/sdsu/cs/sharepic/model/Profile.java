@@ -1,4 +1,4 @@
-package edu.sdsu.cs.sharepic.classes;
+package edu.sdsu.cs.sharepic.model;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by Rakshit Pithadia on 4/15/15.
  * Copyright (c) 2015 Harsh Shah, Rakshit Pithadia. All rights reserved.
  */
+
 public class Profile {
     private String profileName;
     private ArrayList<AbstractAccount> accounts;

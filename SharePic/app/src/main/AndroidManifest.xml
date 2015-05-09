@@ -2,35 +2,53 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.sdsu.cs.sharepic" >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="sharepic" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateProfileActivity"
+            android:name=".activity.CreateProfileActivity"
             android:label="@string/title_activity_create_profile" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name=".SelectProfileActivity"
+            android:name=".activity.SelectProfileActivity"
             android:label="@string/title_activity_select_profile" >
         </activity>
         <activity
-            android:name=".ProfileDetailActivity"
+            android:name=".activity.ProfileDetailActivity"
             android:label="@string/title_activity_profile_detail" >
+        </activity>
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboard">
+            <intent-filter>
+                <data android:scheme="db-l00snssp2vqeghc" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

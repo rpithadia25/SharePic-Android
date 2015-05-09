@@ -1,9 +1,11 @@
-package edu.sdsu.cs.sharepic;
+package edu.sdsu.cs.sharepic.activity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import edu.sdsu.cs.sharepic.R;
 
 
 public class ProfileDetailActivity extends ActionBarActivity {

@@ -1,12 +1,10 @@
-package edu.sdsu.cs.sharepic;
+package edu.sdsu.cs.sharepic.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,14 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import edu.sdsu.cs.sharepic.classes.AbstractAccount;
+import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.classes.RecyclerViewAdapter;
 import edu.sdsu.cs.sharepic.classes.RowItems;
@@ -79,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-}
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

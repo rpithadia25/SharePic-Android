@@ -1,9 +1,9 @@
-package edu.sdsu.cs.sharepic;
+package edu.sdsu.cs.sharepic.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
 public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {

@@ -21,4 +21,18 @@
         <!--android:layout_height="match_parent" >-->
     <!--</android.support.v7.widget.RecyclerView>-->
 
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView"
+        android:layout_marginTop="56dp" />
 </LinearLayout>
