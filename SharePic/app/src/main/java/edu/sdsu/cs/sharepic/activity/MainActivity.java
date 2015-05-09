@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Context mainActivity = getApplicationContext();
                 Intent goDetail = new Intent(mainActivity, ProfileDetailActivity.class);
-                goDetail.putExtra("profile", items.get(position));
+                goDetail.putExtra(Constants.PROFILE, items.get(position));
                 startActivity(goDetail);
             }
         });
@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                String profileName = data.getStringExtra(Constants.PROFILE_NAME);
+                String profileName = data.getStringExtra(Constants.PROFILE);
                 items.add(profileName);
         }
     }

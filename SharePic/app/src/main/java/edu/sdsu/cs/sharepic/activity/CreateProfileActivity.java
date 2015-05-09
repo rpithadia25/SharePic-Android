@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,23 +28,25 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     ArrayAdapter<String> adapter;
     EditText profileName;
     private Profile profile;
-    ArrayList<Account> selectedAccounts;
+    ArrayList<String> selectedAccounts;
+    Account[] supportedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
 
+        supportedAccounts = Account.supportedAccounts(getApplicationContext());
         findViewsById();
 
-        String[] supportedAccounts = getResources().getStringArray(R.array.supported_accounts);
+        final String[] supportedAccounts = getResources().getStringArray(R.array.supported_accounts);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, supportedAccounts);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Populate supportedAccounts here
+                selectedAccounts.add(supportedAccounts[position]);
             }
         });
 
@@ -84,29 +85,28 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        SparseBooleanArray selectedAccounts = listView.getCheckedItemPositions();
+        //SparseBooleanArray selectedAccounts = listView.getCheckedItemPositions();
         if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
             profile.setProfileName(profileName.getText().toString());
-//            profile.setAccounts();
-            ArrayList<String> selectedItems = new ArrayList<String>();
-
-            for (int i = 0; i < selectedAccounts.size(); i++) {
-                // Item position in adapter
-                int position = selectedAccounts.keyAt(i);
-
-                if (selectedAccounts.valueAt(i))
-                    selectedItems.add(adapter.getItem(position));
-            }
-
-            ArrayList<String> outputStrArr = new ArrayList<>();
-
-            for (int i = 0; i < selectedItems.size(); i++) {
-                outputStrArr.add(i, selectedItems.get(i));
-            }
+            profile.setAccounts(selectedAccounts);
+//            ArrayList<String> selectedItems = new ArrayList<String>();
+//
+//            for (int i = 0; i < selectedAccounts.size(); i++) {
+//                // Item position in adapter
+//                int position = selectedAccounts.keyAt(i);
+//
+//                if (selectedAccounts.valueAt(i))
+//                    selectedItems.add(adapter.getItem(position));
+//            }
+//
+//            ArrayList<String> outputStrArr = new ArrayList<>();
+//
+//            for (int i = 0; i < selectedItems.size(); i++) {
+//                outputStrArr.add(i, selectedItems.get(i));
+//            }
 
             Intent passBack = getIntent();
-//            passBack.putExtra("selectedAccounts", outputStrArr);
-            passBack.putExtra(Constants.PROFILE_NAME, profileName.getText().toString());
+            passBack.putExtra(Constants.PROFILE, profile.getProfileName());
             setResult(RESULT_OK, passBack);
             finish();
         } else if (profileName.length() == 0) {
