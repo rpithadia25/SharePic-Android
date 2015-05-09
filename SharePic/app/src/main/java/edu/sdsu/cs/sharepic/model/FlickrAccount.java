@@ -1,6 +1,5 @@
 package edu.sdsu.cs.sharepic.model;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,21 +9,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.FlickrException;
-import com.googlecode.flickrjandroid.REST;
-import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.auth.Permission;
-import com.googlecode.flickrjandroid.interestingness.InterestingnessInterface;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthInterface;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.photos.PhotosInterface;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import edu.sdsu.cs.sharepic.Constants;
 import edu.sdsu.cs.sharepic.Utils;
@@ -45,15 +35,15 @@ public class FlickrAccount extends Account {
     private static final String API_SECRET_KEY = "4144818e19bd4ce4";
 
     public static final Uri OAUTH_CALLBACK_URI = Uri.parse(Constants.FLICKR_CALLBACK_SCHEME + "://oauth");
-    private Activity mContext;
+    private Context mContext;
 
-    private FlickrAccount(Activity context) {
+    private FlickrAccount(Context context) {
         mContext = context;
     }
 
-    public static FlickrAccount getInstance(Activity callingActivity) {
+    public static FlickrAccount getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new FlickrAccount(callingActivity);
+            mInstance = new FlickrAccount(context);
         }
 
         return mInstance;
@@ -65,10 +55,6 @@ public class FlickrAccount extends Account {
         }
 
         return flickr;
-    }
-
-    private void init() {
-
     }
 
     @Override
@@ -159,15 +145,7 @@ public class FlickrAccount extends Account {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = ProgressDialog.show(mContext, "", "Generating the authorization request...");
-            mProgressDialog.setCanceledOnTouchOutside(true);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dlg) {
-                    FlickrOAuthTask.this.cancel(true);
-                }
-            });
+            // TODO: Show toast msg
         }
 
         @Override
@@ -191,7 +169,8 @@ public class FlickrAccount extends Account {
             }
 
             if (!url.isEmpty() && !url.startsWith("error")) {
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                mContext.startActivity(intent);
             }
         }
     }
