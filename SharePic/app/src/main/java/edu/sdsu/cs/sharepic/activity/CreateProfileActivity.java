@@ -1,8 +1,10 @@
 package edu.sdsu.cs.sharepic.activity;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +22,7 @@ import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
 import edu.sdsu.cs.sharepic.model.Profiles;
 
-public class CreateProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {
 
     private Button saveButton;
     private ListView listView;

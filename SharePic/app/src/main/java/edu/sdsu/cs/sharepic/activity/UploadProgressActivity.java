@@ -1,13 +1,14 @@
 package edu.sdsu.cs.sharepic.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import edu.sdsu.cs.sharepic.R;
 
-public class UploadProgressActivity extends AppCompatActivity {
+public class UploadProgressActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
