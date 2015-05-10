@@ -80,7 +80,6 @@ public class Dropbox extends Account {
     }
 
     public void finishLogin() {
-
         if (!isLoggedIn() && mDBApi.getSession().authenticationSuccessful()) {
             try {
                 mDBApi.getSession().finishAuthentication();

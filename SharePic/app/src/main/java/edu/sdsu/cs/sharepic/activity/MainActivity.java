@@ -13,8 +13,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.model.Profile;
+import edu.sdsu.cs.sharepic.model.Profiles;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Context mainActivity = getApplicationContext();
                 Intent goDetail = new Intent(mainActivity, ProfileDetailActivity.class);
-                goDetail.putExtra(Constants.PROFILE, items.get(position));
+                goDetail.putExtra(Constants.PROFILE_INDEX_KEY, position);
                 startActivity(goDetail);
             }
         });
@@ -66,8 +70,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                String profileName = data.getStringExtra(Constants.PROFILE);
-                items.add(profileName);
+                items.clear();
+                Iterator<Profile> iterator = Profiles.getInstance().iterator();
+                while (iterator.hasNext()) {
+                    Profile profile = iterator.next();
+                    items.add(profile.getProfileName());
+                }
                 itemsAdapter.notifyDataSetChanged();
         }
     }
