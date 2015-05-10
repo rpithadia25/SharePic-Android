@@ -1,13 +1,12 @@
 package edu.sdsu.cs.sharepic.activity;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +27,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     private ArrayAdapter<String> adapter;
     private EditText profileName;
     private Profile profile;
-    ArrayList<Account> selectedAccounts;
+
     Account[] supportedAccounts;
 
     @Override
@@ -37,7 +36,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_create_profile);
 
         supportedAccounts = Account.supportedAccounts(getApplicationContext());
-        findViewsById();
+        init();
 
         String[] accounts = getResources().getStringArray(R.array.supported_accounts);
         for(int i = 0; i < supportedAccounts.length; i++) {
@@ -46,22 +45,15 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, accounts);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedAccounts.add(supportedAccounts[position]);
-            }
-        });
 
         saveButton.setOnClickListener(this);
     }
 
-    private void findViewsById() {
+    private void init() {
         listView = (ListView) findViewById(R.id.accountsList);
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
         profile = new Profile();
-        selectedAccounts = new ArrayList<>();
     }
 
     @Override
@@ -89,6 +81,16 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
+            SparseBooleanArray checked = listView.getCheckedItemPositions();
+            ArrayList<Account> selectedAccounts = new ArrayList<>();
+
+            for (int i = 0; i < checked.size(); i++) {
+                int position = checked.keyAt(i);
+                if (checked.valueAt(i)) {
+                    selectedAccounts.add(supportedAccounts[position]);
+                }
+            }
+
             profile.setProfileName(profileName.getText().toString());
             profile.setAccounts(selectedAccounts);
             Profiles.getInstance().add(profile);

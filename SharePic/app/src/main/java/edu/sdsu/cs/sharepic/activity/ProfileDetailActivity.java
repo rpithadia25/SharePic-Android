@@ -16,16 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
-
+import android.widget.LinearLayout;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-
 import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import edu.sdsu.cs.sharepic.R;
-import edu.sdsu.cs.sharepic.model.Profiles;
+
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
 
@@ -35,16 +32,20 @@ public class ProfileDetailActivity extends AppCompatActivity {
     private static final String TAG = "ProfileDetailActivity";
     private ViewGroup mSelectedImagesContainer;
     HashSet<Uri> mMedia = new HashSet<Uri>();
+    LinearLayout accountsIconView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
+
+        accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
+
+        addAccountIcons(accountsIconView);
         mSelectedImagesContainer = (ViewGroup) findViewById(R.id.selected_photos_container);
         View getImages = findViewById(R.id.get_images);
 
         getImages.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 getImages();
@@ -66,6 +67,12 @@ public class ProfileDetailActivity extends AppCompatActivity {
                 startActivityForResult(goDetail, INTENT_REQUEST_GET_IMAGES);
             }
         });
+    }
+
+    private void addAccountIcons(LinearLayout layout){
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.ic_dropbox);
+        layout.addView(imageView);
     }
 
     private void getImages() {
@@ -121,7 +128,6 @@ public class ProfileDetailActivity extends AppCompatActivity {
             ImageView thumbnail = (ImageView) imageHolder.findViewById(R.id.media_image);
 
             if(!uri.toString().contains("content://")) {
-                // probably a relative uri
                 uri = Uri.fromFile(new File(uri.toString()));
             }
 
