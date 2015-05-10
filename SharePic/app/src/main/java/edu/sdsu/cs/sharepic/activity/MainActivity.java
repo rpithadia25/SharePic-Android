@@ -15,6 +15,7 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import java.util.ArrayList;
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.model.Account;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,12 +23,15 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> items = new ArrayList<>();
     ArrayAdapter<String> itemsAdapter;
     private static final int INTENT_REQUEST_CODE = 1;
+    Account[] supportedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(Constants.MAIN_TITLE);
+
+        supportedAccounts = Account.supportedAccounts(getApplicationContext());
 
         listView = (ListView) findViewById(R.id.listView);
         items = new ArrayList<>();
