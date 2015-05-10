@@ -19,10 +19,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import edu.sdsu.cs.sharepic.R;
-
+import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.model.Dropbox;
+import edu.sdsu.cs.sharepic.model.FlickrAccount;
+import edu.sdsu.cs.sharepic.model.Profile;
+import edu.sdsu.cs.sharepic.model.Profiles;
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
 
@@ -33,14 +38,15 @@ public class ProfileDetailActivity extends ActionBarActivity {
     private ViewGroup mSelectedImagesContainer;
     HashSet<Uri> mMedia = new HashSet<Uri>();
     LinearLayout accountsIconView;
+    private Profile currentProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
 
+        currentProfile = fetchCurrentProfile();
         accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
-
         addAccountIcons(accountsIconView);
         mSelectedImagesContainer = (ViewGroup) findViewById(R.id.selected_photos_container);
         View getImages = findViewById(R.id.get_images);
@@ -62,23 +68,32 @@ public class ProfileDetailActivity extends ActionBarActivity {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context mainActivity = getApplicationContext();
-                Intent goDetail = new Intent(mainActivity, UploadProgressActivity.class);
-                startActivityForResult(goDetail, INTENT_REQUEST_GET_IMAGES);
+                //TODO: Upload images here
             }
         });
     }
 
+    private Profile fetchCurrentProfile() {
+        Bundle data = getIntent().getExtras();
+        int index = data.getInt(Constants.PROFILE_INDEX_KEY);
+        return Profiles.getInstance().getProfile(index);
+    }
+
     private void addAccountIcons(LinearLayout layout){
 
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.ic_dropbox);
-        layout.addView(imageView);
+        ArrayList profileAccounts = currentProfile.getAccounts();
 
-        //TODO: Remove this
-        ImageView imageView2 = new ImageView(this);
-        imageView2.setImageResource(R.drawable.ic_flickr);
-        layout.addView(imageView2);
+        if (profileAccounts.contains(Dropbox.getInstance(getApplicationContext()))) {
+            ImageView dropboxImageView = new ImageView(this);
+            dropboxImageView.setImageResource(R.drawable.ic_dropbox);
+            layout.addView(dropboxImageView);
+        }
+
+        if (profileAccounts.contains(FlickrAccount.getInstance(getApplicationContext()))) {
+            ImageView flickrImageView = new ImageView(this);
+            flickrImageView.setImageResource(R.drawable.ic_flickr);
+            layout.addView(flickrImageView);
+        }
     }
 
     private void getImages() {
@@ -153,7 +168,7 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds profileNames to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_profile_detail, menu);
         return true;
     }

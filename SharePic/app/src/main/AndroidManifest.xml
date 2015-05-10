@@ -66,11 +66,6 @@
         <activity
             android:name="nl.changer.polypicker.ImagePickerActivity"
             android:theme="@style/HoloTheme" />
-        <activity
-            android:name=".activity.UploadProgressActivity"
-            android:label="@string/title_activity_upload_progress"
-            android:screenOrientation="portrait">
-        </activity>
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package edu.sdsu.cs.sharepic.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -25,8 +23,8 @@ import edu.sdsu.cs.sharepic.model.Profiles;
 public class CreateProfileActivity extends ActionBarActivity implements View.OnClickListener {
 
     private Button saveButton;
-    private ListView listView;
-    private ArrayAdapter<String> adapter;
+    private ListView supportedAccountsListView;
+    private ArrayAdapter<String> accountsAdapter;
     private EditText profileName;
     private Profile profile;
 
@@ -44,15 +42,15 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         for(int i = 0; i < supportedAccounts.length; i++) {
             accounts[i] = supportedAccounts[i].toString();
         }
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, accounts);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setAdapter(adapter);
+        accountsAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, accounts);
+        supportedAccountsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        supportedAccountsListView.setAdapter(accountsAdapter);
 
         saveButton.setOnClickListener(this);
     }
 
     private void init() {
-        listView = (ListView) findViewById(R.id.accountsList);
+        supportedAccountsListView = (ListView) findViewById(R.id.accountsList);
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
         profile = new Profile();
@@ -82,8 +80,8 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
-            SparseBooleanArray checked = listView.getCheckedItemPositions();
+        if (profileName.length() != 0 && supportedAccountsListView.getCheckedItemCount() != 0) {
+            SparseBooleanArray checked = supportedAccountsListView.getCheckedItemPositions();
             ArrayList<Account> selectedAccounts = new ArrayList<>();
 
             for (int i = 0; i < checked.size(); i++) {

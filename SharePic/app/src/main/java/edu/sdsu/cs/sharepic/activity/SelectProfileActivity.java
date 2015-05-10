@@ -24,9 +24,9 @@ import edu.sdsu.cs.sharepic.model.Profiles;
 
 public class SelectProfileActivity extends ActionBarActivity {
 
-    ListView listView;
-    ArrayList<String> items = new ArrayList<>();
-    ArrayAdapter<String> itemsAdapter;
+    ListView profileListView;
+    ArrayList<String> profileNames = new ArrayList<>();
+    ArrayAdapter<String> profileNamesAdapter;
     private static final int INTENT_REQUEST_CODE = 1;
     Account[] supportedAccounts;
 
@@ -38,25 +38,25 @@ public class SelectProfileActivity extends ActionBarActivity {
 
         supportedAccounts = Account.supportedAccounts(getApplicationContext());
 
-        listView = (ListView) findViewById(R.id.listView);
-        items = new ArrayList<>();
-        itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-        listView.setAdapter(itemsAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        profileListView = (ListView) findViewById(R.id.listView);
+        profileNames = new ArrayList<>();
+        profileNamesAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, profileNames);
+        profileListView.setAdapter(profileNamesAdapter);
+        profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Context mainActivity = getApplicationContext();
-                Intent goDetail = new Intent(mainActivity, ProfileDetailActivity.class);
-                goDetail.putExtra(Constants.PROFILE_INDEX_KEY, position);
-                startActivity(goDetail);
+                Intent profileDetailActivityIntent = new Intent(mainActivity, ProfileDetailActivity.class);
+                profileDetailActivityIntent.putExtra(Constants.PROFILE_INDEX_KEY, position);
+                startActivity(profileDetailActivityIntent);
             }
         });
 
-        ImageView imageView = new ImageView(this);
+        ImageView floatingButtonImageView = new ImageView(this);
 
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
-                .setContentView(imageView)
+                .setContentView(floatingButtonImageView)
                 .setBackgroundDrawable(R.drawable.ic_plus)
                 .build();
 
@@ -64,8 +64,8 @@ public class SelectProfileActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Context mainActivity = getApplicationContext();
-                Intent goDetail = new Intent(mainActivity, CreateProfileActivity.class);
-                startActivityForResult(goDetail, INTENT_REQUEST_CODE);
+                Intent createProfileActivityIntent = new Intent(mainActivity, CreateProfileActivity.class);
+                startActivityForResult(createProfileActivityIntent, INTENT_REQUEST_CODE);
             }
         });
 
@@ -75,19 +75,19 @@ public class SelectProfileActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                items.clear();
+                profileNames.clear();
                 Iterator<Profile> iterator = Profiles.getInstance().iterator();
                 while (iterator.hasNext()) {
                     Profile profile = iterator.next();
-                    items.add(profile.getProfileName());
+                    profileNames.add(profile.getProfileName());
                 }
-                itemsAdapter.notifyDataSetChanged();
+                profileNamesAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds profileNames to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -102,8 +102,8 @@ public class SelectProfileActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Context mainActivity = getApplicationContext();
-            Intent goSettings = new Intent(mainActivity, SettingsActivity.class);
-            startActivity(goSettings);
+            Intent settingsActivityIntent = new Intent(mainActivity, SettingsActivity.class);
+            startActivity(settingsActivityIntent);
             return true;
         }
 
