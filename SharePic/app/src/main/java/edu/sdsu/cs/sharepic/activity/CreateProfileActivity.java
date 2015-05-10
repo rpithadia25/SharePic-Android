@@ -36,7 +36,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_create_profile);
 
         supportedAccounts = Account.supportedAccounts(getApplicationContext());
-        findViewsById();
+        init();
 
         String[] accounts = getResources().getStringArray(R.array.supported_accounts);
         for(int i = 0; i < supportedAccounts.length; i++) {
@@ -49,7 +49,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         saveButton.setOnClickListener(this);
     }
 
-    private void findViewsById() {
+    private void init() {
         listView = (ListView) findViewById(R.id.accountsList);
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
