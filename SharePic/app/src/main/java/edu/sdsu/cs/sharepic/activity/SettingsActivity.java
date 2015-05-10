@@ -4,17 +4,59 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+
+import com.googlecode.flickrjandroid.Flickr;
 
 import edu.sdsu.cs.sharepic.R;
+import edu.sdsu.cs.sharepic.model.Dropbox;
+import edu.sdsu.cs.sharepic.model.FlickrAccount;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    Switch dropboxSwitch;
+    Switch flickrSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-    }
 
+        final Dropbox dropboxInstance = Dropbox.getInstance(getApplicationContext());
+        final FlickrAccount flickrInstance = FlickrAccount.getInstance(getApplicationContext());
+
+        dropboxSwitch = (Switch) findViewById(R.id.dropbox_login_switch);
+        if (dropboxInstance.isLoggedIn()) {
+            dropboxSwitch.setChecked(true);
+        } else {
+            dropboxSwitch.setChecked(false);
+        }
+        dropboxSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    dropboxInstance.login();
+                    dropboxInstance.finishLogin();
+                } else {
+                    dropboxInstance.logout();
+                }
+            }
+        });
+
+        flickrSwitch = (Switch) findViewById(R.id.flickr_login_switch);
+        flickrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    flickrInstance.login();
+                } else {
+                    flickrInstance.logout();
+                }
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
