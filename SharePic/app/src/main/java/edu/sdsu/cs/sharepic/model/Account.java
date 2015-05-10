@@ -1,6 +1,7 @@
 package edu.sdsu.cs.sharepic.model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 /**
  * Created by Rakshit Pithadia on 4/15/15.
@@ -12,6 +13,7 @@ public abstract class Account {
     public abstract void login();
     public abstract void logout();
     public abstract boolean isLoggedIn();
+    public abstract void upload(Bitmap bitmap);
 
     public static Account[] supportedAccounts(Context context) {
         if (accounts == null) {

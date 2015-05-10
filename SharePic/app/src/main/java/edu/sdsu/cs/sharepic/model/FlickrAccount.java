@@ -2,17 +2,31 @@ package edu.sdsu.cs.sharepic.model;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.dropbox.client2.exception.DropboxException;
 import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.auth.Permission;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthInterface;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.uploader.UploadMetaData;
+import com.googlecode.flickrjandroid.uploader.Uploader;
 
+import org.xml.sax.SAXException;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 
 import edu.sdsu.cs.sharepic.Utils;
@@ -53,7 +67,7 @@ public class FlickrAccount extends Account {
         return Constants.FLICKR;
     }
 
-    public Flickr getFlickr() {
+    private Flickr getFlickr() {
         if (flickr == null) {
             flickr = new Flickr(API_KEY, API_SECRET_KEY);
         }
@@ -81,6 +95,30 @@ public class FlickrAccount extends Account {
     public boolean isLoggedIn() {
         OAuth oAuth = getOAuthToken();
         return (oAuth != null);
+    }
+
+    @Override
+    public void upload(final Bitmap imageBitmap) {
+        Thread upload = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Uploader uploader = getFlickr().getUploader();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        UploadMetaData metaData = new UploadMetaData();
+                        metaData.setAsync(true);
+                        metaData.setFamilyFlag(true);
+                        byte[] byteArray = stream.toByteArray();
+                        uploader.upload("abc.jpg", byteArray, metaData);
+                        Log.i(TAG, "Uploaded");
+                    } catch (SAXException | FlickrException | IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+        });
+
+        upload.start();
     }
 
     public void finishLogin(Intent intent) {
@@ -128,6 +166,7 @@ public class FlickrAccount extends Account {
             Log.i(TAG, "OAuth tokens empty");
             return null;
         }
+
         OAuth oAuth = new OAuth();
         OAuthToken oAuthToken = new OAuthToken();
         oAuth.setToken(oAuthToken);

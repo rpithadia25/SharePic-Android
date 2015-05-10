@@ -112,6 +112,7 @@ public class Dropbox extends Account {
         return mDBApi.getSession().isLinked();
     }
 
+    @Override
     public void upload(Bitmap imageBitmap) {
         ContextWrapper cw = new ContextWrapper(mContext);
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
