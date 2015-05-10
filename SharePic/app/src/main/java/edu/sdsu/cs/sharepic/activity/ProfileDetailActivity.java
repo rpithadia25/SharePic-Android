@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
@@ -24,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import edu.sdsu.cs.sharepic.R;
+import edu.sdsu.cs.sharepic.model.Profiles;
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
 
