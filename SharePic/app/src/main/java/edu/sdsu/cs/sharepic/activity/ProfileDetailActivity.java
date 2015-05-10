@@ -128,7 +128,6 @@ public class ProfileDetailActivity extends AppCompatActivity {
             ImageView thumbnail = (ImageView) imageHolder.findViewById(R.id.media_image);
 
             if(!uri.toString().contains("content://")) {
-                // probably a relative uri
                 uri = Uri.fromFile(new File(uri.toString()));
             }
 

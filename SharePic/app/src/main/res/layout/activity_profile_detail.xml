@@ -42,7 +42,7 @@
             android:animateLayoutChanges="true"
             android:gravity="left"
             android:orientation="horizontal"
-            android:visibility="visible" >
+            android:visibility="visible">
 
             <!-- images will be added dynamically to this layout -->
         </LinearLayout>

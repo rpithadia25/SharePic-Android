@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:hint="@string/profile_name_hint"
+        android:singleLine="true"
+        android:maxLength="20"
         />
 
     <ListView
