@@ -19,6 +19,7 @@ import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
+import edu.sdsu.cs.sharepic.model.Profiles;
 
 public class CreateProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -90,14 +91,19 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         if (profileName.length() != 0 && listView.getCheckedItemCount() != 0) {
             profile.setProfileName(profileName.getText().toString());
             profile.setAccounts(selectedAccounts);
-            Intent passBack = getIntent();
-            passBack.putExtra(Constants.PROFILE, profile.getProfileName());
-            setResult(RESULT_OK, passBack);
+            Profiles.getInstance().add(profile);
+            setResult(RESULT_OK);
             finish();
         } else if (profileName.length() == 0) {
-            new AlertDialog.Builder(this).setTitle(Constants.ALERT_TITLE).setMessage(Constants.PROFILE_NAME_EMPTY_MESSAGE).setNeutralButton(Constants.OKAY, null).show();
+            new AlertDialog.Builder(this)
+                    .setTitle(Constants.ALERT_TITLE)
+                    .setMessage(Constants.PROFILE_NAME_EMPTY_MESSAGE)
+                    .setNeutralButton(Constants.OKAY, null).show();
         } else {
-            new AlertDialog.Builder(this).setTitle(Constants.ALERT_TITLE).setMessage(Constants.NO_ACCOUNT_SELECTED_MESSAGE).setNeutralButton(Constants.OKAY, null).show();
+            new AlertDialog.Builder(this)
+                    .setTitle(Constants.ALERT_TITLE)
+                    .setMessage(Constants.NO_ACCOUNT_SELECTED_MESSAGE)
+                    .setNeutralButton(Constants.OKAY, null).show();
         }
     }
 }

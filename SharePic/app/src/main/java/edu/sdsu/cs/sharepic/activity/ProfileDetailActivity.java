@@ -17,14 +17,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-
 import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import edu.sdsu.cs.sharepic.R;
+
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
 

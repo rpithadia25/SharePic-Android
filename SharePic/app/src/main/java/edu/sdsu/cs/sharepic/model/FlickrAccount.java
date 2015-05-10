@@ -40,7 +40,7 @@ public class FlickrAccount extends Account {
         mContext = context;
     }
 
-    public static FlickrAccount getInstance(Context context) {
+    public static synchronized FlickrAccount getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new FlickrAccount(context);
         }
