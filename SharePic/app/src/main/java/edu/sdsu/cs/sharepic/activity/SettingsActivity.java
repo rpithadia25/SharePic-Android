@@ -1,57 +1,60 @@
 package edu.sdsu.cs.sharepic.activity;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import edu.sdsu.cs.sharepic.R;
+import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Dropbox;
-import edu.sdsu.cs.sharepic.model.FlickrAccount;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
 
+    private static final String TAG = "SettingsActivity";
     Switch dropboxSwitch;
     Switch flickrSwitch;
-    Dropbox dropboxInstance ;
-    FlickrAccount flickrInstance;
+    Account[] accounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        dropboxInstance = Dropbox.getInstance(getApplicationContext());
-        flickrInstance = FlickrAccount.getInstance(getApplicationContext());
 
-        dropboxSwitch = (Switch) findViewById(R.id.dropbox_login_switch);
-        dropboxSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        accounts = Account.supportedAccounts(getApplicationContext());
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout_account_settings);
+        float scale = getResources().getDisplayMetrics().density;
+        for (int i=0; i < accounts.length; i++) {
+            Switch accountSwitch = new Switch(this);
+            accountSwitch.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            accountSwitch.setText(accounts[i].toString());
+            accountSwitch.setPadding(0, 0, 0, (int) (10 * scale + 0.5f));
+            accountSwitch.setTag(i);
+            accountSwitch.setOnCheckedChangeListener(this);
+            linearLayout.addView(accountSwitch);
+        }
+
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
 
-                if (isChecked && !dropboxInstance.isLoggedIn()) {
-                    dropboxInstance.login();
-                }
-
-                if (!isChecked) {
-                    dropboxInstance.logout();
-                }
-            }
-        });
-
-        flickrSwitch = (Switch) findViewById(R.id.flickr_login_switch);
-        flickrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && !flickrInstance.isLoggedIn()) {
-                    flickrInstance.login();
-                }
-
-                if (!isChecked) {
-                    flickrInstance.logout();
-                }
             }
         });
     }
@@ -59,26 +62,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (dropboxInstance != null) {
-            dropboxInstance.finishLogin();
-        }
-
-        if (flickrInstance != null) {
-            flickrInstance.finishLogin(getIntent());
-        }
-
-        if (dropboxInstance.isLoggedIn()) {
-            dropboxSwitch.setChecked(true);
-        } else {
-            dropboxSwitch.setChecked(false);
-        }
-
-        if (flickrInstance.isLoggedIn()) {
-            flickrSwitch.setChecked(true);
-        } else {
-            flickrSwitch.setChecked(false);
-        }
     }
 
     @Override
@@ -107,5 +90,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Account account = accounts[Integer.valueOf(buttonView.getTag().toString())];
+        Log.i(TAG, account.toString());
     }
 }
