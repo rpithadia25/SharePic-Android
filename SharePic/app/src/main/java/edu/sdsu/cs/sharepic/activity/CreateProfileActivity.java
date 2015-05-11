@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
@@ -33,25 +32,27 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
 
-        supportedAccounts = Account.supportedAccounts(getApplicationContext());
         init();
-
-        String[] accounts = getResources().getStringArray(R.array.supported_accounts);
-        for(int i = 0; i < supportedAccounts.length; i++) {
-            accounts[i] = supportedAccounts[i].toString();
-        }
-        accountsAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, accounts);
         supportedAccountsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         supportedAccountsListView.setAdapter(accountsAdapter);
-
         saveButton.setOnClickListener(this);
     }
 
     private void init() {
+        supportedAccounts = Account.supportedAccounts(getApplicationContext());
         supportedAccountsListView = (ListView) findViewById(R.id.accountsList);
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
         profile = new Profile();
+        accountsAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, populateSupportedAccounts());
+    }
+
+    private String[] populateSupportedAccounts() {
+        String[] accounts = getResources().getStringArray(R.array.supported_accounts);
+        for(int i = 0; i < supportedAccounts.length; i++) {
+            accounts[i] = supportedAccounts[i].toString();
+        }
+        return accounts;
     }
 
     @Override

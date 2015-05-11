@@ -1,6 +1,5 @@
 package edu.sdsu.cs.sharepic.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,17 +10,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
@@ -36,7 +31,6 @@ public class SelectProfileActivity extends ActionBarActivity {
     ArrayAdapter<String> profileNamesAdapter;
     private static final int INTENT_REQUEST_CODE = 1;
     Account[] supportedAccounts;
-    ArrayList<Profile> profiles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,25 +39,18 @@ public class SelectProfileActivity extends ActionBarActivity {
         setTitle(Constants.MAIN_TITLE);
 
         loadProfiles();
-        supportedAccounts = Account.supportedAccounts(getApplicationContext());
+        init();
 
-        profileListView = (ListView) findViewById(R.id.listView);
-        profileNames = new ArrayList<>();
-        profileNamesAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, profileNames);
-        profileListView.setAdapter(profileNamesAdapter);
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Context mainActivity = getApplicationContext();
-                Intent profileDetailActivityIntent = new Intent(mainActivity, ProfileDetailActivity.class);
+                Intent profileDetailActivityIntent = new Intent(getApplicationContext(), ProfileDetailActivity.class);
                 profileDetailActivityIntent.putExtra(Constants.PROFILE_INDEX_KEY, position);
                 startActivity(profileDetailActivityIntent);
             }
         });
 
         ImageView floatingButtonImageView = new ImageView(this);
-
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
                 .setContentView(floatingButtonImageView)
                 .setBackgroundDrawable(R.drawable.ic_plus)
@@ -72,20 +59,25 @@ public class SelectProfileActivity extends ActionBarActivity {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context mainActivity = getApplicationContext();
-                Intent createProfileActivityIntent = new Intent(mainActivity, CreateProfileActivity.class);
+                Intent createProfileActivityIntent = new Intent(getApplicationContext(), CreateProfileActivity.class);
                 startActivityForResult(createProfileActivityIntent, INTENT_REQUEST_CODE);
             }
         });
+    }
 
+    private void init() {
+        supportedAccounts = Account.supportedAccounts(getApplicationContext());
+        profileListView = (ListView) findViewById(R.id.listView);
+        profileNames = new ArrayList<>();
+        profileNamesAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, profileNames);
+        profileListView.setAdapter(profileNamesAdapter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                if (requestCode == INTENT_REQUEST_CODE) {
-                }
                 profileNames.clear();
                 Iterator<Profile> iterator = Profiles.getInstance().iterator();
                 while (iterator.hasNext()) {
@@ -122,8 +114,8 @@ public class SelectProfileActivity extends ActionBarActivity {
                 JSONArray jsonArray = new JSONArray(sharedData);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    profileNames.add((String)jsonObject.get(Constants.PROFILE_NAME));
                 }
-                ArrayList profileData = new ArrayList();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -147,8 +139,7 @@ public class SelectProfileActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Context mainActivity = getApplicationContext();
-            Intent settingsActivityIntent = new Intent(mainActivity, SettingsActivity.class);
+            Intent settingsActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(settingsActivityIntent);
             return true;
         }

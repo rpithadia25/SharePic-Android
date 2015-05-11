@@ -20,7 +20,7 @@
     </HorizontalScrollView>
 
     <Button
-        android:id="@+id/get_images"
+        android:id="@+id/images_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Pick Images"
@@ -28,7 +28,7 @@
         android:layout_gravity="center" />
 
     <HorizontalScrollView
-        android:id="@+id/hori_scroll_view"
+        android:id="@+id/selected_images_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="277dp"
         android:fillViewport="false"
@@ -37,7 +37,7 @@
         android:paddingTop="1dp">
 
         <LinearLayout
-            android:id="@+id/selected_photos_container"
+            android:id="@+id/selected_images_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="left"

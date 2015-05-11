@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Parcelable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +35,6 @@ import nl.changer.polypicker.utils.ImageInternalFetcher;
 public class ProfileDetailActivity extends ActionBarActivity {
 
     private static int INTENT_REQUEST_GET_IMAGES = 111;
-    private static final String TAG = "ProfileDetailActivity";
     private ViewGroup mSelectedImagesContainer;
     HashSet<Uri> mMedia = new HashSet<Uri>();
     LinearLayout accountsIconView;
@@ -49,16 +47,13 @@ public class ProfileDetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
+
         init();
-
-
         currentProfile = fetchCurrentProfile();
-        accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
         addAccountIcons(accountsIconView);
-        mSelectedImagesContainer = (ViewGroup) findViewById(R.id.selected_photos_container);
-        View getImages = findViewById(R.id.get_images);
+        View imagesPreview = findViewById(R.id.images_preview);
 
-        getImages.setOnClickListener(new View.OnClickListener() {
+        imagesPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getImages();
@@ -84,6 +79,8 @@ public class ProfileDetailActivity extends ActionBarActivity {
         dropboxInstance = Dropbox.getInstance(getApplicationContext());
         flickrInstance = FlickrAccount.getInstance(getApplicationContext());
         selectedImages = new Bitmap[Constants.MAX_IMAGE_COUNT];
+        accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
+        mSelectedImagesContainer = (ViewGroup) findViewById(R.id.selected_images_container);
     }
 
     private Profile fetchCurrentProfile() {
@@ -129,7 +126,6 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
                 if (uris != null) {
                     for (Uri uri : uris) {
-                        Log.i(TAG, " uri: " + uri);
                         mMedia.add(uri);
                     }
                     populateBitmaps(parcelableUris);
@@ -157,7 +153,6 @@ public class ProfileDetailActivity extends ActionBarActivity {
         while(iterator.hasNext()) {
             Uri uri = iterator.next();
 
-            Log.i(TAG, " uri: " + uri);
             if(mMedia.size() >= 1) {
                 mSelectedImagesContainer.setVisibility(View.VISIBLE);
             }
@@ -176,9 +171,9 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
             // set the dimension to correctly
             // show the image thumbnail.
-            int wdpx = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
-            int htpx = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
-            thumbnail.setLayoutParams(new FrameLayout.LayoutParams(wdpx, htpx));
+            int widthPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
+            int heightPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
+            thumbnail.setLayoutParams(new FrameLayout.LayoutParams(widthPixels, heightPixels));
         }
     }
 

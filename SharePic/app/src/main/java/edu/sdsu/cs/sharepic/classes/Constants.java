@@ -8,8 +8,9 @@ public class Constants {
     public static final String SELECTED_ACCOUNTS                = "selectedAccounts";
     public static final String PROFILE_NAME                     = "profileName";
     public static final String PROFILE                          = "profile";
-    public static final String PROFILES                          = "profiles";
+    public static final String PROFILES                         = "profiles";
     public static final String ACCOUNTS                         = "accounts";
+    public static final String ACCOUNT_NAME                     = "accountName";
     public static final String PROFILE_INDEX_KEY                = "profileIndexKey";
     public static final String PROFILE_NAME_EMPTY_MESSAGE       = "Profile name cannot be empty";
     public static final String NO_ACCOUNT_SELECTED_MESSAGE      = "Please select at least one account";
