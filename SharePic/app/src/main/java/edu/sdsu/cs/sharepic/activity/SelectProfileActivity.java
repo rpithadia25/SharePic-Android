@@ -3,6 +3,7 @@ package edu.sdsu.cs.sharepic.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,9 +93,9 @@ public class SelectProfileActivity extends ActionBarActivity {
     public void saveSharedPreferences() {
         ArrayList jsonArray = new ArrayList();
         Iterator profileIterator = Profiles.getInstance().iterator();
-        HashMap dictionary = new HashMap();
         Profile currentProfile;
         while (profileIterator.hasNext()) {
+            HashMap dictionary = new HashMap();
             currentProfile = (Profile) profileIterator.next();
             dictionary.put(Constants.PROFILE_NAME,currentProfile.getProfileName());
             ArrayList accountsJSONArray = new ArrayList();
@@ -115,6 +116,15 @@ public class SelectProfileActivity extends ActionBarActivity {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                     profileNames.add((String)jsonObject.get(Constants.PROFILE_NAME));
+                    JSONArray accountPositionsArray = jsonObject.getJSONArray(Constants.ACCOUNTS);
+
+                    Profile profile = new Profile();
+                    profile.setProfileName(profileNames.get(i));
+                    for (int j = 0; j < accountPositionsArray.length(); j++) {
+                        profile.addAccountPosition(accountPositionsArray.getInt(j));
+                    }
+
+                    Profiles.getInstance().add(profile);
                 }
                 profileNamesAdapter.notifyDataSetChanged();
             } catch (JSONException e) {

@@ -50,7 +50,10 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
         init();
         currentProfile = fetchCurrentProfile();
+        accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
         addAccountIcons(accountsIconView);
+        mSelectedImagesContainer = (ViewGroup) findViewById(R.id.selected_images_container);
+
         View imagesPreview = findViewById(R.id.images_preview);
 
         imagesPreview.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +64,6 @@ public class ProfileDetailActivity extends ActionBarActivity {
         });
 
         ImageView imageView = new ImageView(this);
-
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
                 .setContentView(imageView)
                 .setBackgroundDrawable(R.drawable.ic_upload)
@@ -73,14 +75,13 @@ public class ProfileDetailActivity extends ActionBarActivity {
                 //TODO: Upload images here
             }
         });
+
     }
 
     private void init() {
         dropboxInstance = Dropbox.getInstance(getApplicationContext());
         flickrInstance = FlickrAccount.getInstance(getApplicationContext());
         selectedImages = new Bitmap[Constants.MAX_IMAGE_COUNT];
-        accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
-        mSelectedImagesContainer = (ViewGroup) findViewById(R.id.selected_images_container);
     }
 
     private Profile fetchCurrentProfile() {
