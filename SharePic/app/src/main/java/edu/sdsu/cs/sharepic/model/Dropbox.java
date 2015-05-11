@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
@@ -110,6 +111,11 @@ public class Dropbox extends Account {
     @Override
     public boolean isLoggedIn() {
         return mDBApi.getSession().isLinked();
+    }
+
+    @Override
+    public int getImageResource() {
+        return R.drawable.ic_dropbox;
     }
 
     public void upload(Bitmap imageBitmap) {

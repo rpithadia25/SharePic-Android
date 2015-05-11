@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
@@ -82,17 +80,15 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     public void onClick(View v) {
         if (profileName.length() != 0 && supportedAccountsListView.getCheckedItemCount() != 0) {
             SparseBooleanArray checked = supportedAccountsListView.getCheckedItemPositions();
-            ArrayList<Account> selectedAccounts = new ArrayList<>();
 
+            profile.setProfileName(profileName.getText().toString());
             for (int i = 0; i < checked.size(); i++) {
                 int position = checked.keyAt(i);
                 if (checked.valueAt(i)) {
-                    selectedAccounts.add(supportedAccounts[position]);
+                    profile.addAccountPosition(position);
                 }
             }
 
-            profile.setProfileName(profileName.getText().toString());
-            profile.setAccounts(selectedAccounts);
             Profiles.getInstance().add(profile);
             setResult(RESULT_OK);
             finish();

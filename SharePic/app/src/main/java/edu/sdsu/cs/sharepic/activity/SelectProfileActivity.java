@@ -13,10 +13,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import edu.sdsu.cs.sharepic.R;
+import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
@@ -29,6 +36,7 @@ public class SelectProfileActivity extends ActionBarActivity {
     ArrayAdapter<String> profileNamesAdapter;
     private static final int INTENT_REQUEST_CODE = 1;
     Account[] supportedAccounts;
+    ArrayList<Profile> profiles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +44,7 @@ public class SelectProfileActivity extends ActionBarActivity {
         setContentView(R.layout.activity_select_profile);
         setTitle(Constants.MAIN_TITLE);
 
+        loadProfiles();
         supportedAccounts = Account.supportedAccounts(getApplicationContext());
 
         profileListView = (ListView) findViewById(R.id.listView);
@@ -75,6 +84,8 @@ public class SelectProfileActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
+                if (requestCode == INTENT_REQUEST_CODE) {
+                }
                 profileNames.clear();
                 Iterator<Profile> iterator = Profiles.getInstance().iterator();
                 while (iterator.hasNext()) {
@@ -82,6 +93,41 @@ public class SelectProfileActivity extends ActionBarActivity {
                     profileNames.add(profile.getProfileName());
                 }
                 profileNamesAdapter.notifyDataSetChanged();
+                saveSharedPreferences();
+        }
+    }
+
+    public void saveSharedPreferences() {
+        ArrayList jsonArray = new ArrayList();
+        Iterator profileIterator = Profiles.getInstance().iterator();
+        HashMap dictionary = new HashMap();
+        Profile currentProfile;
+        while (profileIterator.hasNext()) {
+            currentProfile = (Profile) profileIterator.next();
+            dictionary.put(Constants.PROFILE_NAME,currentProfile.getProfileName());
+            ArrayList accountsJSONArray = new ArrayList();
+            for (Integer accountPosition: currentProfile.getAccountsPositions()) {
+                accountsJSONArray.add(accountPosition);
+            }
+            dictionary.put(Constants.ACCOUNTS,accountsJSONArray);
+            jsonArray.add(dictionary);
+        }
+        Utils.storeInSharedPreferences(getApplicationContext(), Constants.PROFILES, jsonArray.toString());
+    }
+
+    public void loadProfiles() {
+        String sharedData = Utils.getFromSharedPreferences(getApplicationContext(), Constants.PROFILES);
+        if (sharedData != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(sharedData);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                }
+                ArrayList profileData = new ArrayList();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

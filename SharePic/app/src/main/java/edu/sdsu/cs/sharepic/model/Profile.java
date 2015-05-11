@@ -9,7 +9,12 @@ import java.util.ArrayList;
 
 public class Profile {
     private String profileName;
-    private ArrayList<Account> accounts;
+
+    private ArrayList<Integer> accounts; // holds positions of Accounts in current Profile from supportedAccounts array
+
+    public Profile () {
+        accounts = new ArrayList<>();
+    }
 
     public String getProfileName() {
         return profileName;
@@ -19,11 +24,11 @@ public class Profile {
         this.profileName = profileName;
     }
 
-    public ArrayList<Account> getAccounts() {
+    public ArrayList<Integer> getAccountsPositions() {
         return accounts;
     }
 
-    public void setAccounts(ArrayList<Account> accounts) {
-        this.accounts = accounts;
+    public void addAccountPosition(int index) {
+        accounts.add(index);
     }
 }

@@ -1,8 +1,9 @@
 package edu.sdsu.cs.sharepic.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
+import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Dropbox;
 import edu.sdsu.cs.sharepic.model.FlickrAccount;
 import edu.sdsu.cs.sharepic.model.Profile;
@@ -39,11 +41,16 @@ public class ProfileDetailActivity extends ActionBarActivity {
     HashSet<Uri> mMedia = new HashSet<Uri>();
     LinearLayout accountsIconView;
     private Profile currentProfile;
+    private Bitmap[] selectedImages = null;
+    Dropbox dropboxInstance;
+    FlickrAccount flickrInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
+        init();
+
 
         currentProfile = fetchCurrentProfile();
         accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
@@ -73,6 +80,12 @@ public class ProfileDetailActivity extends ActionBarActivity {
         });
     }
 
+    private void init() {
+        dropboxInstance = Dropbox.getInstance(getApplicationContext());
+        flickrInstance = FlickrAccount.getInstance(getApplicationContext());
+        selectedImages = new Bitmap[Constants.MAX_IMAGE_COUNT];
+    }
+
     private Profile fetchCurrentProfile() {
         Bundle data = getIntent().getExtras();
         int index = data.getInt(Constants.PROFILE_INDEX_KEY);
@@ -81,25 +94,20 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
     private void addAccountIcons(LinearLayout layout){
 
-        ArrayList profileAccounts = currentProfile.getAccounts();
-
-        if (profileAccounts.contains(Dropbox.getInstance(getApplicationContext()))) {
-            ImageView dropboxImageView = new ImageView(this);
-            dropboxImageView.setImageResource(R.drawable.ic_dropbox);
-            layout.addView(dropboxImageView);
-        }
-
-        if (profileAccounts.contains(FlickrAccount.getInstance(getApplicationContext()))) {
-            ImageView flickrImageView = new ImageView(this);
-            flickrImageView.setImageResource(R.drawable.ic_flickr);
-            layout.addView(flickrImageView);
+        ArrayList<Integer> profileAccounts = currentProfile.getAccountsPositions();
+        Account[] accounts = Account.supportedAccounts(getApplicationContext());
+        for (int i = 0; i < profileAccounts.size(); i++) {
+            ImageView imageView = new ImageView(this);
+            int imageResource = accounts[profileAccounts.get(i)].getImageResource();
+            imageView.setImageResource(imageResource);
+            layout.addView(imageView);
         }
     }
 
     private void getImages() {
         Intent intent = new Intent(getApplicationContext(), ImagePickerActivity.class);
         //Set Image Picker Limit
-        intent.putExtra(ImagePickerActivity.EXTRA_SELECTION_LIMIT, 10);
+        intent.putExtra(ImagePickerActivity.EXTRA_SELECTION_LIMIT, Constants.MAX_IMAGE_COUNT);
         startActivityForResult(intent, INTENT_REQUEST_GET_IMAGES);
     }
 
@@ -124,12 +132,20 @@ public class ProfileDetailActivity extends ActionBarActivity {
                         Log.i(TAG, " uri: " + uri);
                         mMedia.add(uri);
                     }
+                    populateBitmaps(parcelableUris);
                     showMedia();
                 }
             }
         }
     }
 
+    private void populateBitmaps(Parcelable[] selection) {
+
+        for(int i = 0; i < selection.length; i++) {
+            Bitmap yourSelectedImage = BitmapFactory.decodeFile(selection[i].toString());
+            selectedImages[i] = yourSelectedImage;
+        }
+    }
 
     private void showMedia() {
         // Remove all views before
