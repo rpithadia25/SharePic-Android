@@ -38,8 +38,8 @@ public class SelectProfileActivity extends ActionBarActivity {
         setContentView(R.layout.activity_select_profile);
         setTitle(Constants.MAIN_TITLE);
 
-        loadProfiles();
         init();
+        loadProfiles();
 
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -116,7 +116,7 @@ public class SelectProfileActivity extends ActionBarActivity {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                     profileNames.add((String)jsonObject.get(Constants.PROFILE_NAME));
                 }
-
+                profileNamesAdapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
