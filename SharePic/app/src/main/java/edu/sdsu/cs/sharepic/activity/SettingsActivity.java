@@ -1,34 +1,22 @@
 package edu.sdsu.cs.sharepic.activity;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.model.Account;
-import edu.sdsu.cs.sharepic.model.Dropbox;
 
 public class SettingsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
 
     private static final String TAG = "SettingsActivity";
-    Switch dropboxSwitch;
-    Switch flickrSwitch;
     Account[] accounts;
 
     @Override
@@ -49,14 +37,6 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
             accountSwitch.setOnCheckedChangeListener(this);
             linearLayout.addView(accountSwitch);
         }
-
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override
@@ -72,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds profileNames to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_settings, menu);
         return true;
     }

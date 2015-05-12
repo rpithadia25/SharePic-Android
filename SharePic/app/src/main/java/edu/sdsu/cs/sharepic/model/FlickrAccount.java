@@ -2,14 +2,12 @@ package edu.sdsu.cs.sharepic.model;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.dropbox.client2.exception.DropboxException;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.auth.Permission;
@@ -22,13 +20,10 @@ import com.googlecode.flickrjandroid.uploader.Uploader;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
+import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
@@ -67,7 +62,12 @@ public class FlickrAccount extends Account {
         return Constants.FLICKR;
     }
 
-    private Flickr getFlickr() {
+
+    public int getImageResource() {
+        return R.drawable.ic_flickr;
+    }
+
+    public Flickr getFlickr() {
         if (flickr == null) {
             flickr = new Flickr(API_KEY, API_SECRET_KEY);
         }
@@ -98,14 +98,14 @@ public class FlickrAccount extends Account {
     }
 
     @Override
-    public void upload(final Bitmap imageBitmap) {
+    public void upload(final Bitmap[] imageBitmap) {
         Thread upload = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         Uploader uploader = getFlickr().getUploader();
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        imageBitmap[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
                         UploadMetaData metaData = new UploadMetaData();
                         metaData.setAsync(true);
                         metaData.setFamilyFlag(true);

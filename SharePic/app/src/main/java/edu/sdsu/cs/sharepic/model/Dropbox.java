@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
@@ -112,6 +113,10 @@ public class Dropbox extends Account {
     @Override
     public boolean isLoggedIn() {
         return mDBApi.getSession().isLinked();
+    }
+
+    public int getImageResource() {
+        return R.drawable.ic_dropbox;
     }
 
     @Override
