@@ -36,10 +36,11 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
     private static int INTENT_REQUEST_GET_IMAGES = 111;
     private ViewGroup mSelectedImagesContainer;
-    HashSet<Uri> mMedia = new HashSet<Uri>();
-    LinearLayout accountsIconView;
+    private HashSet<Uri> mMedia = new HashSet<Uri>();
+    private LinearLayout accountsIconView;
     private Profile currentProfile;
     private Bitmap[] selectedImages = null;
+
     Dropbox dropboxInstance;
     FlickrAccount flickrInstance;
 
@@ -98,6 +99,7 @@ public class ProfileDetailActivity extends ActionBarActivity {
             ImageView imageView = new ImageView(this);
             int imageResource = accounts[profileAccounts.get(i)].getImageResource();
             imageView.setImageResource(imageResource);
+            imageView.setPadding(Constants.ACCOUNT_IMAGE_PADDING,Constants.ZERO,Constants.ACCOUNT_IMAGE_PADDING,Constants.ZERO);
             layout.addView(imageView);
         }
     }
@@ -139,8 +141,8 @@ public class ProfileDetailActivity extends ActionBarActivity {
     private void populateBitmaps(Parcelable[] selection) {
 
         for(int i = 0; i < selection.length; i++) {
-            Bitmap yourSelectedImage = BitmapFactory.decodeFile(selection[i].toString());
-            selectedImages[i] = yourSelectedImage;
+            Bitmap selectedImage = BitmapFactory.decodeFile(selection[i].toString());
+            selectedImages[i] = selectedImage;
         }
     }
 

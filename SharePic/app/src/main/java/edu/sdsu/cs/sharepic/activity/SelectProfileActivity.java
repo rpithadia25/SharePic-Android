@@ -3,7 +3,6 @@ package edu.sdsu.cs.sharepic.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,11 +26,11 @@ import edu.sdsu.cs.sharepic.model.Profiles;
 
 public class SelectProfileActivity extends ActionBarActivity {
 
-    ListView profileListView;
-    ArrayList<String> profileNames = new ArrayList<>();
-    ArrayAdapter<String> profileNamesAdapter;
+    private ListView profileListView;
+    private ArrayList<String> profileNames = new ArrayList<>();
+    private ArrayAdapter<String> profileNamesAdapter;
     private static final int INTENT_REQUEST_CODE = 1;
-    Account[] supportedAccounts;
+    private Account[] supportedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +113,14 @@ public class SelectProfileActivity extends ActionBarActivity {
             try {
                 JSONArray jsonArray = new JSONArray(sharedData);
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                    profileNames.add((String)jsonObject.get(Constants.PROFILE_NAME));
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    profileNames.add(jsonObject.getString(Constants.PROFILE_NAME));
                     JSONArray accountPositionsArray = jsonObject.getJSONArray(Constants.ACCOUNTS);
-
                     Profile profile = new Profile();
                     profile.setProfileName(profileNames.get(i));
                     for (int j = 0; j < accountPositionsArray.length(); j++) {
                         profile.addAccountPosition(accountPositionsArray.getInt(j));
                     }
-
                     Profiles.getInstance().add(profile);
                 }
                 profileNamesAdapter.notifyDataSetChanged();

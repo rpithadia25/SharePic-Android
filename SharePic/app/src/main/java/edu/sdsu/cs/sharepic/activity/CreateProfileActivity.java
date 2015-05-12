@@ -24,8 +24,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     private ArrayAdapter<String> accountsAdapter;
     private EditText profileName;
     private Profile profile;
-
-    Account[] supportedAccounts;
+    private Account[] supportedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
