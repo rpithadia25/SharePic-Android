@@ -43,15 +43,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
         profile = new Profile();
-        accountsAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, populateSupportedAccounts());
-    }
-
-    private String[] populateSupportedAccounts() {
-        String[] accounts = getResources().getStringArray(R.array.supported_accounts);
-        for(int i = 0; i < supportedAccounts.length; i++) {
-            accounts[i] = supportedAccounts[i].toString();
-        }
-        return accounts;
+        accountsAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, supportedAccounts);
     }
 
     @Override
