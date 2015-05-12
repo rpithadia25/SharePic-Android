@@ -15,6 +15,7 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import java.net.URL;
 
+import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
@@ -51,6 +52,11 @@ public class FlickrAccount extends Account {
     @Override
     public String toString() {
         return Constants.FLICKR;
+    }
+
+    @Override
+    public int getImageResource() {
+        return R.drawable.ic_flickr;
     }
 
     public Flickr getFlickr() {

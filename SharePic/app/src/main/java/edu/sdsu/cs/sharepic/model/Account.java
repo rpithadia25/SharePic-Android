@@ -13,6 +13,7 @@ public abstract class Account {
     public abstract void logout();
     public abstract boolean isLoggedIn();
 
+    // WARNING: Never change the order of accounts in accounts array
     public static Account[] supportedAccounts(Context context) {
         if (accounts == null) {
             accounts = new Account[]{FlickrAccount.getInstance(context), Dropbox.getInstance(context)};
@@ -21,4 +22,5 @@ public abstract class Account {
         return accounts;
     }
 
+    public abstract int getImageResource();
 }

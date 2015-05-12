@@ -7,7 +7,7 @@
     tools:context="edu.sdsu.cs.sharepic.SettingsActivity"
     android:orientation="vertical">
 
-
+    //TODO: Add Switches programmatically
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
