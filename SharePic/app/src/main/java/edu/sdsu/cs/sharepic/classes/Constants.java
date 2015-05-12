@@ -22,4 +22,5 @@ public class Constants {
     public static final String EQUALS                           = "=";
     public static final String DROPBOX                          = "Dropbox";
     public static final String FLICKR                           = "Flickr";
+    public static final String DATE_FORMAT                      = "dd-MM-yyyy";
 }

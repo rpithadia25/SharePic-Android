@@ -34,16 +34,10 @@ public class Profiles {
     }
 
     public Profile getProfile(int index) {
-        Iterator <Profile> iterator = iterator();
-        while (iterator.hasNext()) {
-            Profile profile = iterator.next();
-            if (index == 0) {
-                return profile;
-            }
-            Log.i(TAG, String.valueOf(index));
-            index--;
-        }
 
+        if (index <= profiles.size()) {
+            return profiles.get(index);
+        }
         return null;
     }
 

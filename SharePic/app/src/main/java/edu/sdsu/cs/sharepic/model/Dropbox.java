@@ -15,6 +15,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
@@ -113,31 +115,36 @@ public class Dropbox extends Account {
     }
 
     @Override
-    public void upload(Bitmap imageBitmap) {
+    public void upload(Bitmap[] imageBitmap) {
         ContextWrapper cw = new ContextWrapper(mContext);
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        try {
-            final File file = new File(directory, "abc.jpg");
-            FileOutputStream fOut = new FileOutputStream(file);
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-            fOut.close();
-            Thread upload = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        FileInputStream fIn = new FileInputStream(file);
-                        mDBApi.putFile("/abc.jpg", fIn, file.length(), null, null);
-                        Log.i(TAG, "Uploaded");
-                    } catch (DropboxException | FileNotFoundException e) {
-                        Log.e(TAG, e.getMessage());
+
+        for (int i=0; i<imageBitmap.length; i++) {
+            try {
+                String date = SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT).format(new Date());
+                final String fileName = date + "_Image" + i + ".jpg";
+                final File file = new File(directory, fileName);
+                FileOutputStream fOut = new FileOutputStream(file);
+                imageBitmap[i].compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.close();
+                Thread upload = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            FileInputStream fIn = new FileInputStream(file);
+                            mDBApi.putFile(fileName, fIn, file.length(), null, null);
+                            Log.i(TAG, "Uploaded");
+                        } catch (DropboxException | FileNotFoundException e) {
+                            Log.e(TAG, e.getMessage());
+                        }
                     }
-                }
-            });
+                });
 
-            upload.start();
-        } catch (IOException e) {
-            Log.i(TAG, e.getMessage());
+                upload.start();
+            } catch (IOException e) {
+                Log.i(TAG, e.getMessage());
 
+            }
         }
     }
 }

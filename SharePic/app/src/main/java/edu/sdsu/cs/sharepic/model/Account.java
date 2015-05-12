@@ -13,13 +13,12 @@ public abstract class Account {
     public abstract void login();
     public abstract void logout();
     public abstract boolean isLoggedIn();
-    public abstract void upload(Bitmap bitmap);
+    public abstract void upload(Bitmap[] bitmap);
 
     public static Account[] supportedAccounts(Context context) {
         if (accounts == null) {
-            accounts = new Account[]{FlickrAccount.getInstance(context), Dropbox.getInstance(context)};
+            accounts = new Account[]{Dropbox.getInstance(context)};
         }
-
         return accounts;
     }
 
