@@ -25,8 +25,6 @@ import java.util.Iterator;
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
-import edu.sdsu.cs.sharepic.model.Dropbox;
-import edu.sdsu.cs.sharepic.model.FlickrAccount;
 import edu.sdsu.cs.sharepic.model.Profile;
 import edu.sdsu.cs.sharepic.model.Profiles;
 import nl.changer.polypicker.ImagePickerActivity;
@@ -37,12 +35,8 @@ public class ProfileDetailActivity extends ActionBarActivity {
     private static int INTENT_REQUEST_GET_IMAGES = 111;
     private ViewGroup mSelectedImagesContainer;
     private HashSet<Uri> mMedia = new HashSet<Uri>();
-    private LinearLayout accountsIconView;
     private Profile currentProfile;
     private Bitmap[] selectedImages = null;
-
-    Dropbox dropboxInstance;
-    FlickrAccount flickrInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +45,7 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
         init();
         currentProfile = fetchCurrentProfile();
-        accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
+        LinearLayout accountsIconView = (LinearLayout) findViewById(R.id.accounts_logo_container);
         addAccountIcons(accountsIconView);
         mSelectedImagesContainer = (ViewGroup) findViewById(R.id.selected_images_container);
 
@@ -80,8 +74,6 @@ public class ProfileDetailActivity extends ActionBarActivity {
     }
 
     private void init() {
-        dropboxInstance = Dropbox.getInstance(getApplicationContext());
-        flickrInstance = FlickrAccount.getInstance(getApplicationContext());
         selectedImages = new Bitmap[Constants.MAX_IMAGE_COUNT];
     }
 
@@ -94,7 +86,7 @@ public class ProfileDetailActivity extends ActionBarActivity {
     private void addAccountIcons(LinearLayout layout){
 
         ArrayList<Integer> profileAccounts = currentProfile.getAccountsPositions();
-        Account[] accounts = Account.supportedAccounts(getApplicationContext());
+        Account[] accounts = Account.supportedAccounts(this);
         for (int i = 0; i < profileAccounts.size(); i++) {
             ImageView imageView = new ImageView(this);
             int imageResource = accounts[profileAccounts.get(i)].getImageResource();
@@ -127,13 +119,11 @@ public class ProfileDetailActivity extends ActionBarActivity {
                 Uri[] uris = new Uri[parcelableUris.length];
                 System.arraycopy(parcelableUris, 0, uris, 0, parcelableUris.length);
 
-                if (uris != null) {
-                    for (Uri uri : uris) {
-                        mMedia.add(uri);
-                    }
-                    populateBitmaps(parcelableUris);
-                    showMedia();
+                for (Uri uri : uris) {
+                    mMedia.add(uri);
                 }
+                populateBitmaps(parcelableUris);
+                showMedia();
             }
         }
     }
