@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import edu.sdsu.cs.sharepic.R;
@@ -120,17 +121,17 @@ class Dropbox extends Account {
     }
 
     @Override
-    public void upload(Bitmap[] imageBitmap) {
+    public void upload(ArrayList<Bitmap> bitmap) {
         ContextWrapper cw = new ContextWrapper(mActivity);
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File directory = cw.getDir(Constants.IMAGE_DIRECTORY, Context.MODE_PRIVATE);
+        try {
+            for (int i = 0; i < bitmap.size(); i++) {
 
-        for (int i=0; i<imageBitmap.length; i++) {
-            try {
                 String date = SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT).format(new Date());
-                final String fileName = date + "_Image" + i + ".jpg";
+                final String fileName = date + Constants._IMAGE + i + Constants.JPEG_EXTENSION;
                 final File file = new File(directory, fileName);
                 FileOutputStream fOut = new FileOutputStream(file);
-                imageBitmap[i].compress(Bitmap.CompressFormat.JPEG, Constants.COMPRESSION_QUALITY, fOut);
+                bitmap.get(i).compress(Bitmap.CompressFormat.JPEG, Constants.COMPRESSION_QUALITY, fOut);
                 fOut.close();
                 Thread upload = new Thread(new Runnable() {
                     @Override
@@ -138,18 +139,16 @@ class Dropbox extends Account {
                         try {
                             FileInputStream fIn = new FileInputStream(file);
                             mDBApi.putFile(fileName, fIn, file.length(), null, null);
-                            Log.i(TAG, "Uploaded");
+                            Log.i(TAG, "Uploaded : " + fileName);
                         } catch (DropboxException | FileNotFoundException e) {
                             Log.e(TAG, e.getMessage());
                         }
                     }
                 });
-
                 upload.start();
-            } catch (IOException e) {
-                Log.i(TAG, e.getMessage());
-
             }
+        } catch (IOException e) {
+            Log.i(TAG, e.getMessage());
         }
     }
 }
