@@ -15,7 +15,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.plus.Plus;
 
 import java.util.ArrayList;
-
+import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
 /**
@@ -91,7 +91,7 @@ public class GoogleDrive extends Account implements GoogleApiClient.OnConnection
 
     @Override
     public int getImageResource() {
-        return 0;
+        return R.drawable.ic_google_drive;
     }
 
     @Override
