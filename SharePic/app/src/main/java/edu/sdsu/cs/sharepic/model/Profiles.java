@@ -1,7 +1,5 @@
 package edu.sdsu.cs.sharepic.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 

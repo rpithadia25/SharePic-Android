@@ -24,7 +24,6 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     private ArrayAdapter<String> accountsAdapter;
     private EditText profileName;
     private Profile profile;
-    private Account[] supportedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
     }
 
     private void init() {
-        supportedAccounts = Account.supportedAccounts(this);
+        Account[] supportedAccounts = Account.supportedAccounts(this);
         supportedAccountsListView = (ListView) findViewById(R.id.accountsList);
         saveButton = (Button) findViewById(R.id.saveButton);
         profileName = (EditText) findViewById(R.id.profileName);
