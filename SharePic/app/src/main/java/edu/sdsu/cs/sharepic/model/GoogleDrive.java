@@ -29,7 +29,7 @@ import edu.sdsu.cs.sharepic.classes.Constants;
 /**
  * Created by Horsie on 5/12/15.
  */
-public class GoogleDrive extends Account implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+class GoogleDrive extends Account implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private static final String TAG = "GoogleDrive";
 
