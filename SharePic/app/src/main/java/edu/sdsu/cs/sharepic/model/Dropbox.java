@@ -130,7 +130,7 @@ class Dropbox extends Account {
                 final String fileName = date + "_Image" + i + ".jpg";
                 final File file = new File(directory, fileName);
                 FileOutputStream fOut = new FileOutputStream(file);
-                imageBitmap[i].compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                imageBitmap[i].compress(Bitmap.CompressFormat.JPEG, Constants.COMPRESSION_QUALITY, fOut);
                 fOut.close();
                 Thread upload = new Thread(new Runnable() {
                     @Override
