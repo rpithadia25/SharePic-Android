@@ -7,4 +7,5 @@
     tools:context="edu.sdsu.cs.sharepic.SettingsActivity"
     android:orientation="vertical"
     android:id="@+id/linear_layout_account_settings">
+
 </LinearLayout>

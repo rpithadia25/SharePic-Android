@@ -16,5 +16,8 @@
         <item>Dropbox</item>
     </string-array>
     <string name="title_activity_upload_progress">UploadProgress</string>
+    <string name="title_activity_google_drive_login">GoogleDriveLogin</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

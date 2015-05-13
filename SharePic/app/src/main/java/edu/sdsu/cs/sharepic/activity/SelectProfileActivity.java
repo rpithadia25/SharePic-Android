@@ -20,7 +20,6 @@ import java.util.Iterator;
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
-import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
 import edu.sdsu.cs.sharepic.model.Profiles;
 
@@ -30,7 +29,6 @@ public class SelectProfileActivity extends ActionBarActivity {
     private ArrayList<String> profileNames = new ArrayList<>();
     private ArrayAdapter<String> profileNamesAdapter;
     private static final int INTENT_REQUEST_CODE = 1;
-    private Account[] supportedAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +64,9 @@ public class SelectProfileActivity extends ActionBarActivity {
     }
 
     private void init() {
-        supportedAccounts = Account.supportedAccounts(getApplicationContext());
         profileListView = (ListView) findViewById(R.id.listView);
         profileNames = new ArrayList<>();
-        profileNamesAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, profileNames);
+        profileNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, profileNames);
         profileListView.setAdapter(profileNamesAdapter);
     }
 

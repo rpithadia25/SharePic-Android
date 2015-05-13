@@ -23,6 +23,7 @@ public class Constants {
     public static final String KEY_FLICKR_SECRET_TOKEN          = "FlickrSecretToken";
     public static final String EQUALS                           = "=";
     public static final String DROPBOX                          = "Dropbox";
+    public static final String GOOGLE_DRIVE                     = "Google Drive";
     public static final String FLICKR                           = "Flickr";
     public static final String DATE_FORMAT                      = "dd-MM-yyyy";
     public static final int ACCOUNT_IMAGE_PADDING               = 15;
