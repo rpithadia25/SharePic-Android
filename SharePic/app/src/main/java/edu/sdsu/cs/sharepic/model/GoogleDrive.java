@@ -1,8 +1,6 @@
 package edu.sdsu.cs.sharepic.model;
 
-import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.Context;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,18 +14,11 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.DriveResource;
-import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.plus.Plus;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,64 +87,64 @@ public class GoogleDrive extends Account implements GoogleApiClient.OnConnection
         return mGoogleApiClient.isConnected();
     }
 
-    final private ResultCallback<DriveFolder.DriveFileResult> fileCallback = new
-            ResultCallback<DriveFolder.DriveFileResult>() {
-                @Override
-                public void onResult(DriveFolder.DriveFileResult result) {
-                    if (!result.getStatus().isSuccess()) {
-                        Log.i(TAG, "Error while trying to create the file");
-                        return;
-                    }
-                    Log.i(TAG, "Created a file in App Folder: " + result.getDriveFile().getDriveId());
-                }
-            };
-
     @Override
     public void upload(final ArrayList<Bitmap> bitmap) {
 
-        final ResultCallback<DriveApi.DriveContentsResult> driveContentsCallback =
-                new ResultCallback<DriveApi.DriveContentsResult>() {
-                    @Override
-                    public void onResult(DriveApi.DriveContentsResult result) {
-                        if (!result.getStatus().isSuccess()) {
-                            Log.i(TAG, "Error while trying to create new file contents");
-                            return;
-                        }
+        for (int i=0; i<bitmap.size(); i++) {
+            final Bitmap currentBitmap = bitmap.get(i);
+            String date = SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT).format(new Date());
+            final String fileName = date + Constants._IMAGE + i + Constants.JPEG_EXTENSION;
 
-                        final DriveContents driveContents = result.getDriveContents();
-
-                        // Perform I/O off the UI thread.
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                String date = SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT).format(new Date());
-                                final String fileName = date + Constants._IMAGE + 0 + Constants.JPEG_EXTENSION;
-
-                                // write content to DriveContents
-                                OutputStream outputStream = driveContents.getOutputStream();
-                                try {
-                                    bitmap.get(0).compress(Bitmap.CompressFormat.JPEG, Constants.COMPRESSION_QUALITY, outputStream);
-                                    outputStream.close();
-                                } catch (IOException e) {
-                                    Log.e(TAG, e.getMessage());
-                                }
-
-                                MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                                        .setTitle(fileName)
-                                        .setMimeType("image/jpeg")
-                                        .setStarred(true).build();
-
-                                // create a file on root folder
-                                Drive.DriveApi.getRootFolder(mGoogleApiClient)
-                                        .createFile(mGoogleApiClient, changeSet, driveContents)
-                                        .setResultCallback(fileCallback);
+            final ResultCallback<DriveFolder.DriveFileResult> fileCallback = new
+                    ResultCallback<DriveFolder.DriveFileResult>() {
+                        @Override
+                        public void onResult(DriveFolder.DriveFileResult result) {
+                            if (!result.getStatus().isSuccess()) {
+                                Log.i(TAG, "Error while trying to create the file");
+                                return;
                             }
-                        }.start();
-                    }
-                };
+                            Log.i(TAG, "Uploaded : " + fileName);
+                        }
+                    };
 
-        Drive.DriveApi.newDriveContents(mGoogleApiClient)
-                .setResultCallback(driveContentsCallback);
+            final ResultCallback<DriveApi.DriveContentsResult> driveContentsCallback = new ResultCallback<DriveApi.DriveContentsResult>() {
+                        @Override
+                        public void onResult(DriveApi.DriveContentsResult result) {
+                            if (!result.getStatus().isSuccess()) {
+                                Log.i(TAG, "Error while trying to create new file contents");
+                                return;
+                            }
+                            final DriveContents driveContents = result.getDriveContents();
+                            // Perform I/O off the UI thread.
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    // write content to DriveContents
+                                    OutputStream outputStream = driveContents.getOutputStream();
+                                    try {
+                                        currentBitmap.compress(Bitmap.CompressFormat.JPEG, Constants.COMPRESSION_QUALITY, outputStream);
+                                        outputStream.close();
+                                    } catch (IOException e) {
+                                        Log.e(TAG, e.getMessage());
+                                    }
+
+                                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                                            .setTitle(fileName)
+                                            .setMimeType("image/jpeg")
+                                            .setStarred(true).build();
+
+                                    // create a file on root folder
+                                    Drive.DriveApi.getRootFolder(mGoogleApiClient)
+                                            .createFile(mGoogleApiClient, changeSet, driveContents)
+                                            .setResultCallback(fileCallback);
+                                }
+                            }.start();
+                        }
+                    };
+
+            Drive.DriveApi.newDriveContents(mGoogleApiClient)
+                    .setResultCallback(driveContentsCallback);
+        }
     }
 
     @Override
@@ -186,9 +177,6 @@ public class GoogleDrive extends Account implements GoogleApiClient.OnConnection
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Connected");
-        DriveId folderId = Drive.DriveApi.getAppFolder(mGoogleApiClient).getDriveId();
-        DriveFolder folder = Drive.DriveApi.getFolder(mGoogleApiClient, folderId);
-        folder.getMetadata(mGoogleApiClient).setResultCallback(metadataRetrievedCallback);
         if (mLoginListener != null) {
             mLoginListener.loggedIn(toString());
         }
@@ -198,24 +186,4 @@ public class GoogleDrive extends Account implements GoogleApiClient.OnConnection
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "onConnectionSuspended");
     }
-
-
-    final private ResultCallback<DriveResource.MetadataResult> metadataRetrievedCallback = new
-            ResultCallback<DriveResource.MetadataResult>() {
-                @Override
-                public void onResult(DriveResource.MetadataResult result) {
-                    if (!result.getStatus().isSuccess()) {
-                        Log.v(TAG, "Problem while trying to fetch metadata.");
-                        return;
-                    }
-
-                    Metadata metadata = result.getMetadata();
-                    if(metadata.isTrashed()){
-                        Log.v(TAG, "Folder is trashed");
-                    }else{
-                        Log.v(TAG, "Folder is not trashed");
-                    }
-
-                }
-            };
 }

@@ -1,7 +1,6 @@
 package edu.sdsu.cs.sharepic.model;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;

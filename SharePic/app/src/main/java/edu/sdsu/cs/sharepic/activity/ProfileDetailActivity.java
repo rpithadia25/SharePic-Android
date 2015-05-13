@@ -139,8 +139,8 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
     private void populateBitmaps(Parcelable[] selection) {
 
-        for(int i = 0; i < selection.length; i++) {
-            Bitmap selectedImage = BitmapFactory.decodeFile(selection[i].toString());
+        for (Parcelable aSelection : selection) {
+            Bitmap selectedImage = BitmapFactory.decodeFile(aSelection.toString());
             selectedImages.add(selectedImage);
         }
     }
