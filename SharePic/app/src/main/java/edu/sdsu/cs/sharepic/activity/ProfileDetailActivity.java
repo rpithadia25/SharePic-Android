@@ -34,9 +34,10 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
     private static int INTENT_REQUEST_GET_IMAGES = 111;
     private ViewGroup mSelectedImagesContainer;
-    private HashSet<Uri> mMedia = new HashSet<Uri>();
+    private HashSet<Uri> mMedia = new HashSet<>();
     private Profile currentProfile;
-    private Bitmap[] selectedImages = null;
+    private ArrayList<Bitmap> selectedImages = null;
+    Account[] accounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +68,22 @@ public class ProfileDetailActivity extends ActionBarActivity {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Upload images here
+                if (selectedImages != null) {
+                    ArrayList<Integer> accountPositions = currentProfile.getAccountsPositions();
+                    for (int i = 0; i < accountPositions.size(); i++) {
+                        Account account = accounts[accountPositions.get(i)];
+                        account.upload(selectedImages);
+                    }
+                    finish();
+                }
             }
         });
 
     }
 
     private void init() {
-        selectedImages = new Bitmap[Constants.MAX_IMAGE_COUNT];
+        selectedImages = new ArrayList<>();
+        accounts = Account.supportedAccounts(this);
     }
 
     private Profile fetchCurrentProfile() {
@@ -132,7 +141,7 @@ public class ProfileDetailActivity extends ActionBarActivity {
 
         for(int i = 0; i < selection.length; i++) {
             Bitmap selectedImage = BitmapFactory.decodeFile(selection[i].toString());
-            selectedImages[i] = selectedImage;
+            selectedImages.add(selectedImage);
         }
     }
 

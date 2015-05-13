@@ -21,4 +21,7 @@ public class Constants {
     public static final int MAX_IMAGE_COUNT                     = 10;
     public static final int ZERO                                = 0;
     public static final int COMPRESSION_QUALITY                 = 100;
+    public static final String JPEG_EXTENSION                   = ".jpg";
+    public static final String IMAGE_DIRECTORY                  = "imageDir";
+    public static final String _IMAGE                           = "_Image";
 }

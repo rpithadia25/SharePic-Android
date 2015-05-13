@@ -30,6 +30,14 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
         initLayout();
     }
 
+    @Override
+    public void onBackPressed() {
+        for (Account account : accounts) {
+            account.setFromSettings(false);
+        }
+        super.onBackPressed();
+    }
+
     private void initLayout() {
         switches = new ArrayList<>();
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout_account_settings);
