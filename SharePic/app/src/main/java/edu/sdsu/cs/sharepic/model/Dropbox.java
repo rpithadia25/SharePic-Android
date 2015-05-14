@@ -122,13 +122,14 @@ class Dropbox extends Account {
 
     @Override
     public void upload(ArrayList<Bitmap> bitmap) {
+        final int numberOfImages = bitmap.size();
         ContextWrapper cw = new ContextWrapper(mActivity);
         File directory = cw.getDir(Constants.IMAGE_DIRECTORY, Context.MODE_PRIVATE);
         try {
-            for (int i = 0; i < bitmap.size(); i++) {
-
+            for (int i = 0; i < numberOfImages; i++) {
                 String date = SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT).format(new Date());
-                final String fileName = date + Constants._IMAGE + i + Constants.JPEG_EXTENSION;
+                final int currentImageNumber = i;
+                final String fileName = date + Constants._IMAGE + currentImageNumber + Constants.JPEG_EXTENSION;
                 final File file = new File(directory, fileName);
                 FileOutputStream fOut = new FileOutputStream(file);
                 bitmap.get(i).compress(Bitmap.CompressFormat.JPEG, Constants.COMPRESSION_QUALITY, fOut);
@@ -139,6 +140,10 @@ class Dropbox extends Account {
                         try {
                             FileInputStream fIn = new FileInputStream(file);
                             mDBApi.putFile(fileName, fIn, file.length(), null, null);
+
+                            if ((currentImageNumber + 1) == numberOfImages) {
+                                // Show Completion Toast
+                            }
                             Log.i(TAG, "Uploaded : " + fileName);
                         } catch (DropboxException | FileNotFoundException e) {
                             Log.e(TAG, e.getMessage());

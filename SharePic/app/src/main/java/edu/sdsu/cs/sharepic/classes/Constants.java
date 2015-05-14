@@ -24,4 +24,6 @@ public class Constants {
     public static final String JPEG_EXTENSION                   = ".jpg";
     public static final String IMAGE_DIRECTORY                  = "imageDir";
     public static final String _IMAGE                           = "_Image";
+
+    public static final String UPLOAD_STARTED_MESSAGE           = "Uploading . . .";
 }

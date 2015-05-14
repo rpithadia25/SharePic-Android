@@ -1,6 +1,7 @@
 package edu.sdsu.cs.sharepic.model;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import edu.sdsu.cs.sharepic.R;
+import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 
 /**
@@ -90,10 +92,12 @@ class GoogleDrive extends Account implements GoogleApiClient.OnConnectionFailedL
     @Override
     public void upload(final ArrayList<Bitmap> bitmap) {
 
-        for (int i=0; i<bitmap.size(); i++) {
+        final int numberOfImages = bitmap.size();
+        for (int i=0; i<numberOfImages; i++) {
             final Bitmap currentBitmap = bitmap.get(i);
             String date = SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT).format(new Date());
-            final String fileName = date + Constants._IMAGE + i + Constants.JPEG_EXTENSION;
+            final int currentImageNumber = i;
+            final String fileName = date + Constants._IMAGE + currentImageNumber + Constants.JPEG_EXTENSION;
 
             final ResultCallback<DriveFolder.DriveFileResult> fileCallback = new
                     ResultCallback<DriveFolder.DriveFileResult>() {
@@ -102,6 +106,10 @@ class GoogleDrive extends Account implements GoogleApiClient.OnConnectionFailedL
                             if (!result.getStatus().isSuccess()) {
                                 Log.i(TAG, "Error while trying to create the file");
                                 return;
+                            }
+
+                            if ((currentImageNumber + 1) == numberOfImages) {
+                                // Show Completion Toast
                             }
                             Log.i(TAG, "Uploaded : " + fileName);
                         }

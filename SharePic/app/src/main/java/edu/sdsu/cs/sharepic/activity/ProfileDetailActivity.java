@@ -17,12 +17,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import edu.sdsu.cs.sharepic.R;
+import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
@@ -74,6 +77,7 @@ public class ProfileDetailActivity extends ActionBarActivity {
                         Account account = accounts[accountPositions.get(i)];
                         account.upload(selectedImages);
                     }
+                    Toast.makeText(getApplicationContext(), Constants.UPLOAD_STARTED_MESSAGE, Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
