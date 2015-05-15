@@ -3,7 +3,6 @@ package edu.sdsu.cs.sharepic.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,8 +48,6 @@ public class SelectProfileActivity extends ActionBarActivity {
             }
         });
 
-        registerForContextMenu(profileListView);
-
         ImageView floatingButtonImageView = new ImageView(this);
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
                 .setContentView(floatingButtonImageView)
@@ -71,12 +68,6 @@ public class SelectProfileActivity extends ActionBarActivity {
         profileNames = new ArrayList<>();
         profileNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, profileNames);
         profileListView.setAdapter(profileNamesAdapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        overridePendingTransition(Constants.ZERO, Constants.ZERO);
     }
 
     @Override
