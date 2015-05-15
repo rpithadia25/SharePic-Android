@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -43,13 +42,6 @@ public class CreateProfileActivity extends ActionBarActivity implements View.OnC
         profileName = (EditText) findViewById(R.id.profileName);
         profile = new Profile();
         accountsAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, supportedAccounts);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_profile, menu);
-        return true;
     }
 
     @Override

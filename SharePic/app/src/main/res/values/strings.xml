@@ -5,7 +5,7 @@
     <string name="title_activity_create_profile">Create Profile</string>
     <string name="title_activity_settings">Manage Accounts</string>
     <string name="title_activity_select_profile">SelectProfileActivity</string>
-    <string name="title_activity_profile_detail">Profile Detail</string>
+    <string name="title_activity_profile_detail">Upload Image</string>
     <string name="profile_name_hint">Enter Profile Name</string>
     <string name="save">Save</string>
     <string name="pickImages">Pick Images</string>
