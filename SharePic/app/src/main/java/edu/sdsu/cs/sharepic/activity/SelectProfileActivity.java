@@ -143,35 +143,6 @@ public class SelectProfileActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, v.getId(), 0, Constants.DELETE_PROFILE);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo selectedProfile = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if(item.getTitle()==Constants.DELETE_PROFILE){
-            deleteProfile(selectedProfile.position);
-        }
-        else {
-            return false;
-        }
-        return true;
-    }
-
-    private void deleteProfile(int position) {
-        Profiles.getInstance().delete(position);
-        saveSharedPreferences();
-        reloadActivity();
-    }
-
-    private void reloadActivity() {
-        finish();
-        startActivity(getIntent());
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
