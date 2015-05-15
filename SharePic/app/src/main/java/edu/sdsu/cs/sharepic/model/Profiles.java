@@ -31,6 +31,10 @@ public class Profiles {
         profiles.add(profile);
     }
 
+    public void delete(int position) {
+        profiles.remove(position);
+    }
+
     public Profile getProfile(int index) {
 
         if (index <= profiles.size()) {

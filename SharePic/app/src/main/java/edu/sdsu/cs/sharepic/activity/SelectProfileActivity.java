@@ -3,6 +3,7 @@ package edu.sdsu.cs.sharepic.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,8 @@ public class SelectProfileActivity extends ActionBarActivity {
             }
         });
 
+        registerForContextMenu(profileListView);
+
         ImageView floatingButtonImageView = new ImageView(this);
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
                 .setContentView(floatingButtonImageView)
@@ -68,6 +71,12 @@ public class SelectProfileActivity extends ActionBarActivity {
         profileNames = new ArrayList<>();
         profileNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, profileNames);
         profileListView.setAdapter(profileNamesAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(Constants.ZERO, Constants.ZERO);
     }
 
     @Override
@@ -131,6 +140,35 @@ public class SelectProfileActivity extends ActionBarActivity {
         // Inflate the menu; this adds profileNames to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, v.getId(), 0, Constants.DELETE_PROFILE);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo selectedProfile = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(item.getTitle()==Constants.DELETE_PROFILE){
+            deleteProfile(selectedProfile.position);
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+
+    private void deleteProfile(int position) {
+        Profiles.getInstance().delete(position);
+        saveSharedPreferences();
+        reloadActivity();
+    }
+
+    private void reloadActivity() {
+        finish();
+        startActivity(getIntent());
     }
 
     @Override

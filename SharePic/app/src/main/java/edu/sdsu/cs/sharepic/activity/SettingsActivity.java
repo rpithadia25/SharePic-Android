@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-
 import java.util.ArrayList;
-
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.LoginListener;

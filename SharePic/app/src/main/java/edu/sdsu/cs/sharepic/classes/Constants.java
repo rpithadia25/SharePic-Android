@@ -27,4 +27,5 @@ public class Constants {
     public static final String ACCOUNT_NOT_LOGGED_IN_MESSAGE    = "One or more accounts are not logged in!";
     public static final String SETTINGS                         = "Settings";
     public static final String UPLOAD_STARTED_MESSAGE           = "Uploading . . .";
+    public static final String DELETE_PROFILE                   = "Delete Profile";
 }
