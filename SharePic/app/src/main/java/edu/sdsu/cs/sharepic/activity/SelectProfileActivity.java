@@ -42,7 +42,7 @@ public class SelectProfileActivity extends ActionBarActivity {
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent profileDetailActivityIntent = new Intent(getApplicationContext(), ProfileDetailActivity.class);
+                Intent profileDetailActivityIntent = new Intent(getApplicationContext(), UploadImageActivity.class);
                 profileDetailActivityIntent.putExtra(Constants.PROFILE_INDEX_KEY, position);
                 startActivity(profileDetailActivityIntent);
             }

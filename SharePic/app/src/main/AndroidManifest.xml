@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ProfileDetailActivity"
+            android:name=".activity.UploadImageActivity"
             android:label="@string/title_activity_profile_detail"
             android:screenOrientation="portrait" >
         </activity>

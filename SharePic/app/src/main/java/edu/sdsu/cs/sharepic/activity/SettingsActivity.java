@@ -3,15 +3,12 @@ package edu.sdsu.cs.sharepic.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-
 import java.util.ArrayList;
-
 import edu.sdsu.cs.sharepic.R;
 import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.LoginListener;
@@ -79,13 +76,6 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
     protected void onNewIntent(Intent intent) {
         //this is very important, otherwise you would get a null Scheme in the onResume later on.
         setIntent(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds profileNames to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
-        return true;
     }
 
     @Override

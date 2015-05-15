@@ -24,6 +24,8 @@ public class Constants {
     public static final String JPEG_EXTENSION                   = ".jpg";
     public static final String IMAGE_DIRECTORY                  = "imageDir";
     public static final String _IMAGE                           = "_Image";
-
+    public static final String ACCOUNT_NOT_LOGGED_IN_MESSAGE    = "One or more accounts are not logged in!";
+    public static final String SETTINGS                         = "Settings";
     public static final String UPLOAD_STARTED_MESSAGE           = "Uploading . . .";
+    public static final String DELETE_PROFILE                   = "Delete Profile";
 }

@@ -1,6 +1,8 @@
 package edu.sdsu.cs.sharepic.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +19,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import edu.sdsu.cs.sharepic.R;
-import edu.sdsu.cs.sharepic.Utils;
 import edu.sdsu.cs.sharepic.classes.Constants;
 import edu.sdsu.cs.sharepic.model.Account;
 import edu.sdsu.cs.sharepic.model.Profile;
@@ -33,7 +32,7 @@ import edu.sdsu.cs.sharepic.model.Profiles;
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
 
-public class ProfileDetailActivity extends ActionBarActivity {
+public class UploadImageActivity extends ActionBarActivity {
 
     private static int INTENT_REQUEST_GET_IMAGES = 111;
     private ViewGroup mSelectedImagesContainer;
@@ -63,26 +62,57 @@ public class ProfileDetailActivity extends ActionBarActivity {
         });
 
         ImageView imageView = new ImageView(this);
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+        FloatingActionButton uploadButton = new FloatingActionButton.Builder(this)
                 .setContentView(imageView)
                 .setBackgroundDrawable(R.drawable.ic_upload)
                 .build();
 
-        actionButton.setOnClickListener(new View.OnClickListener() {
+        uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectedImages != null) {
                     ArrayList<Integer> accountPositions = currentProfile.getAccountsPositions();
-                    for (int i = 0; i < accountPositions.size(); i++) {
-                        Account account = accounts[accountPositions.get(i)];
-                        account.upload(selectedImages);
-                    }
-                    Toast.makeText(getApplicationContext(), Constants.UPLOAD_STARTED_MESSAGE, Toast.LENGTH_LONG).show();
-                    finish();
+                    if (accountsLoggedIn()) {
+                        for (int i = 0; i < accountPositions.size(); i++) {
+                            Account account = accounts[accountPositions.get(i)];
+                            account.upload(selectedImages);
+                        }
+                        Toast.makeText(getApplicationContext(), Constants.UPLOAD_STARTED_MESSAGE, Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                    AlertDialog.Builder renameDialog = new AlertDialog.Builder(UploadImageActivity.this);
+                    renameDialog.setTitle(Constants.ACCOUNT_NOT_LOGGED_IN_MESSAGE);
+                    renameDialog.setPositiveButton(Constants.SETTINGS, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            launchSettings();
+                        }
+                    });
+                    renameDialog.show();
+//                            new AlertDialog.Builder(getApplicationContext())
+//                                    .setTitle(Constants.ALERT_TITLE)
+//                                    .setMessage(Constants.ACCOUNT_NOT_LOGGED_IN_MESSAGE)
+//                                    .setPositiveButton(Constants.SETTINGS, null).show();
                 }
+                }
+            }
+            private void launchSettings() {
+                Intent it = new Intent(UploadImageActivity.this, SettingsActivity.class);
+                startActivity(it);
             }
         });
 
+    }
+
+    private boolean accountsLoggedIn() {
+        ArrayList<Integer> accountPositions = currentProfile.getAccountsPositions();
+        for (int i = 0; i < accountPositions.size(); i++) {
+            Account account = accounts[accountPositions.get(i)];
+            if (!account.isLoggedIn()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void init() {
@@ -181,13 +211,6 @@ public class ProfileDetailActivity extends ActionBarActivity {
             int heightPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
             thumbnail.setLayoutParams(new FrameLayout.LayoutParams(widthPixels, heightPixels));
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds profileNames to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_profile_detail, menu);
-        return true;
     }
 
     @Override
